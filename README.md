@@ -78,3 +78,4 @@ Python 기반 퀀트 리서치 워크스페이스.
 - workspace repo의 기본 작업 브랜치는 `gaejae`
 - 가재는 workspace repo에서 직접 수정 및 commit 가능
 - push는 형 확인 후 진행
+- push 자동화 가능 여부는 실제 런타임 인증 경로에 따라 달라지므로, 소규모 변경으로 수시 검증
