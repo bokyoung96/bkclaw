@@ -1,0 +1,21 @@
+numpy
+pandas
+scipy
+pyarrow
+matplotlib
+plotly
+pydantic
+pyyaml
+tqdm
+scikit-learn
+statsmodels
+pytest
+ruff
+black
+# optional later:
+# torch
+# transformers
+# sentence-transformers
+# xgboost
+# lightgbm
+# apache-airflow

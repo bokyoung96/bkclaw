@@ -1,0 +1,8 @@
+name: transformer_bayesian_alloc_v1
+universe: us_large_mid
+horizon: weekly
+rebalance: weekly
+model: transformer
+portfolio: uncertainty_aware_long_short
+cost_bps: 10
+report_channel: research-lab
