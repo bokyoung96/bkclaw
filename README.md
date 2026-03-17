@@ -73,3 +73,8 @@ Python 기반 퀀트 리서치 워크스페이스.
 - 기본 시간대는 `Asia/Seoul`
 - 비활성화: `DEV_CHANNEL_ENABLED=0 ./restart_gaejae`
 - 다른 채널로 변경: `DEV_CHANNEL_TARGET=channel:<id> ./restart_gaejae`
+
+### Git 운영
+- workspace repo의 기본 작업 브랜치는 `gaejae`
+- 가재는 workspace repo에서 직접 수정 및 commit 가능
+- push는 형 확인 후 진행
