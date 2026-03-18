@@ -1,0 +1,22 @@
+{
+  "strategy_name": "quant_db_momentum_fast",
+  "hypothesis": "12개월 모멘텀 상위 종목이 향후에도 초과수익을 낸다.",
+  "universe": "SPY-US",
+  "datasource": "quant_db",
+  "frequency": "daily",
+  "start_date": "2000-01-01",
+  "end_date": "2025-12-31",
+  "rebalance_rule": "monthly",
+  "execution_assumption": "close_to_close",
+  "cost_bps": 15.0,
+  "slippage_bps": 0.0,
+  "constraints": [
+    "equal_weight_top_decile"
+  ],
+  "outputs": [
+    "summary",
+    "plots",
+    "validation"
+  ],
+  "mode": "fast"
+}

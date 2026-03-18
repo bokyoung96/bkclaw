@@ -1,0 +1,23 @@
+{
+  "strategy_name": "spy_sector_neutral_6m_momentum",
+  "hypothesis": "섹터중립 6개월 모멘텀 상위 종목이 초과수익을 낸다.",
+  "universe": "SPY-US",
+  "datasource": "quant_db",
+  "frequency": "daily",
+  "start_date": "2000-01-01",
+  "end_date": "2025-12-31",
+  "rebalance_rule": "monthly",
+  "execution_assumption": "close_to_close",
+  "cost_bps": 15.0,
+  "slippage_bps": 0.0,
+  "constraints": [
+    "sector_neutral",
+    "top_20pct_within_sector"
+  ],
+  "outputs": [
+    "summary",
+    "plots",
+    "validation"
+  ],
+  "mode": "fast"
+}
