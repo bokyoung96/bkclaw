@@ -1,0 +1,20 @@
+{
+  "basket_name": "strategy_basket_v1",
+  "description": "Reusable quant backtest strategies with standardized specs and artifacts",
+  "strategies": [
+    {
+      "strategy_name": "quant_db_momentum_fast",
+      "spec_file": "configs/backtests/example_quant_db_momentum_fast.json",
+      "datasource": "quant_db",
+      "category": "momentum",
+      "status": "active"
+    },
+    {
+      "strategy_name": "spy_sector_neutral_6m_momentum",
+      "spec_file": "configs/backtests/spy_sector_neutral_6m_momentum_fast.json",
+      "datasource": "quant_db",
+      "category": "momentum",
+      "status": "experimental"
+    }
+  ]
+}
