@@ -124,6 +124,10 @@ cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ```
 
+기본적으로 아래 경로들도 자동 탐색한다:
+- `~/openclaw/docker-compose.yml`
+- repo root 인근 compose 파일
+
 이 명령은:
 - 이미지 태깅
 - docker compose down/up

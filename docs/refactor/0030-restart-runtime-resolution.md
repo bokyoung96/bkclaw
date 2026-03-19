@@ -13,9 +13,10 @@
 
 The restart script now:
 1. tries to resolve a real compose file from known candidate paths
-2. uses `docker compose -f <resolved-file>` when available
-3. otherwise restarts the runtime through `openclaw gateway restart`
-4. records the chosen runtime controller in the restart report
+2. includes the common local operator path `~/openclaw/docker-compose.yml`
+3. uses `docker compose -f <resolved-file>` when available
+4. otherwise restarts the runtime through `openclaw gateway restart`
+5. records the chosen runtime controller in the restart report
 
 ## Why this is not just a workaround
 
