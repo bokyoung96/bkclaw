@@ -23,6 +23,12 @@ cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ```
 
+### Rebuild 후 git/GitHub helper 재고정
+```bash
+cd ~/.openclaw/workspace
+./scripts/git_configure_auth.sh
+```
+
 ### Gateway-only restart
 ```bash
 openclaw gateway restart
