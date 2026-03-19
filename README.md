@@ -12,6 +12,7 @@ Python 기반 퀀트 리서치 워크스페이스.
 세부 원칙은 `docs/refactor/0001-architecture-principles.md` 참고.
 운영/credential/config 규칙은 `docs/refactor/0002-ops-config-and-credential-rules.md`, `docs/refactor/0003-git-and-env-helpers.md` 참고.
 Docker/cleanup 원칙은 `docs/refactor/0004-docker-build-rules.md`, `docs/refactor/0005-workspace-cleanup-rules.md` 참고.
+Legacy 스크립트 정리 원칙은 `docs/refactor/0007-legacy-script-cleanup.md` 참고.
 
 ## 목적
 - 외부 데이터 적재
