@@ -112,6 +112,11 @@ cp ~/.openclaw/workspace/.env.example ~/.openclaw/workspace/.env
 ./scripts/mark_image_baseline.sh
 ```
 
+### trusted elevated 정책 검증
+```bash
+python3 scripts/check_trusted_elevated_policy.py
+```
+
 ---
 
 ## 6. 형이 나를 재시작할 때 보는 명령어
