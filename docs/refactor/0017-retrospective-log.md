@@ -104,3 +104,17 @@ Add entries when one of these happens:
   - If a cleanup rule matters operationally, encode it as a helper or test.
 - Follow-up hardening:
   - Keep the layout check updated when the intended root structure evolves.
+
+## 2026-03-19 — Memory quota failure needs an explicit ops breadcrumb
+- Context:
+  - Prior-decision recall was needed during live Discord troubleshooting and issue follow-up.
+- What went wrong:
+  - `memory_search` failed during the session, forcing manual fallback through transcripts and repo files.
+- Root cause:
+  - The embeddings backend hit quota exhaustion (`429 insufficient_quota`), so memory recall was unavailable even though the rest of the runtime was still alive.
+- Fix applied:
+  - Logged the failure as an explicit operational dependency issue and continued with manual fallback.
+- New rule:
+  - Treat memory recall outages as first-class ops incidents: record them, keep a manual fallback path, and avoid assuming prior-state recovery is available.
+- Follow-up hardening:
+  - Add a durable error/feature tracking entry so future debugging starts with provider quota/billing verification.
