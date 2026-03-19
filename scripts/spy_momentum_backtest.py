@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import math
-import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -10,30 +9,17 @@ import numpy as np
 import pandas as pd
 from topquant_ksk.db import DBConnection
 
+from src.common.quant_db import load_quant_db_credentials
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "outputs" / "spy_momentum_top10"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def load_env(path: Path) -> None:
-    if not path.exists():
-        return
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        os.environ.setdefault(key, value)
-
-
 def make_connection() -> DBConnection:
-    load_env(ROOT / ".env")
-    user = os.getenv("QUANT_DB_USER")
-    password = os.getenv("QUANT_DB_PASSWORD")
-    if not user or not password:
-        raise RuntimeError("QUANT_DB_USER / QUANT_DB_PASSWORD not found")
-    return DBConnection(db_user=user, db_password=password, local_host=False)
+    creds = load_quant_db_credentials(ROOT)
+    return DBConnection(db_user=creds.user, db_password=creds.password, local_host=False)
 
 
 def compute_metrics(daily_net: pd.Series, turnover: pd.Series) -> dict[str, float | str]:
