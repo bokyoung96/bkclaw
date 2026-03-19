@@ -40,6 +40,8 @@ python3 scripts/check_trusted_elevated_policy.py
 
 The check confirms the current trusted elevated baseline for:
 - trusted operator id `530011557837406218`
+- trusted user allowlists on both `discord` and `webchat`
+- `#chat` channel `1482511006440620072`
 - `#main` channel `1481805554157359327`
 - `#dev` channel `1482514790768447590`
 - announcement thread `1484048004779474995`
@@ -49,6 +51,8 @@ The check confirms the current trusted elevated baseline for:
 For this workspace, the safe baseline is:
 - keep `agents.defaults.elevatedDefault = "full"`
 - restrict `tools.elevated.allowFrom` to the trusted operator only
+- allow the trusted operator on both `discord` and `webchat`
+- treat `#chat`, `#dev`, and `#main` as the primary elevated-capable Discord lanes
 - keep Discord `execApprovals.target = "dm"`
 - keep channel allowlists explicit
 - verify config changes with the check script instead of relying on chat-session impressions alone
@@ -62,4 +66,8 @@ For this workspace, the safe baseline is:
 ## Operator note
 
 This resolves the configuration question for issue #16.
+The intended operator posture is:
+- the trusted user can use elevated flows from DM / direct trusted-user contexts
+- the primary Discord elevated lanes are `#chat`, `#dev`, and `#main`
+
 If a future session still fails, investigate runtime/model/tool execution separately rather than reopening the policy question first.

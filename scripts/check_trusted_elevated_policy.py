@@ -7,6 +7,7 @@ CONFIG_PATH = Path.home() / ".openclaw" / "openclaw.json"
 TRUSTED_USER = "530011557837406218"
 TRUSTED_GUILD = "1481805553129750640"
 TRUSTED_CHANNELS = {
+    "1482511006440620072": "#chat",
     "1481805554157359327": "#main",
     "1482514790768447590": "#dev",
     "1484048004779474995": "announcement-thread",
@@ -62,6 +63,16 @@ def main() -> int:
             "tools.elevated.allowFrom.discord contains trusted operator",
             TRUSTED_USER in discord_allow,
             discord_allow,
+            f"contains {TRUSTED_USER}",
+        )
+    )
+
+    webchat_allow = get(config, "tools", "elevated", "allowFrom", "webchat", default=[])
+    checks.append(
+        check(
+            "tools.elevated.allowFrom.webchat contains trusted operator",
+            TRUSTED_USER in webchat_allow,
+            webchat_allow,
             f"contains {TRUSTED_USER}",
         )
     )
