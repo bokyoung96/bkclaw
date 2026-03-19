@@ -27,4 +27,5 @@ docker build \
   .
 
 echo "[ok] built $IMAGE_TAG"
-echo "[next] run: cd ~/openclaw && ./restart_gaejae"
+echo "[next] run: cd ~/.openclaw/workspace && ./bin/restart_gaejae"
+echo "[next] then: cd ~/.openclaw/workspace && ./scripts/git_configure_auth.sh"
