@@ -339,6 +339,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0021-branch-cleanup-policy.md`
 - `docs/refactor/0022-tavily-omx-readiness.md`
 - `docs/refactor/0023-git-runtime-hardening.md`
+- `docs/refactor/0024-research-agent-smoke-test.md`
 
 ---
 
