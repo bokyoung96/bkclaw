@@ -49,3 +49,7 @@ Follow-up refactors should continue by:
 3. extracting reusable workflow services,
 4. standardizing notifications/delivery entrypoints,
 5. adding stronger automated test coverage.
+
+## Operations note
+
+This branch now also includes workspace-level ops rules for recurring credential/config issues and helper scripts that load `.env` consistently for git/runtime-sensitive operations.
