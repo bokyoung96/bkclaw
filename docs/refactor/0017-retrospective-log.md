@@ -1,0 +1,106 @@
+# Gaejae Retrospective Log
+
+## Goal
+
+Record operational mistakes, misreads, false starts, and recoveries so future work becomes faster, calmer, and less repetitive.
+
+This file is not for blame. It is for pattern recognition.
+
+## How to use
+
+Add entries when one of these happens:
+- claimed something was sent/done when it was not actually confirmed
+- used the wrong repo / branch / remote
+- misread a runtime capability
+- forgot an operational rule that should have been encoded
+- discovered a recurring failure mode worth turning into code, docs, or tests
+
+## Entry template
+
+```markdown
+## YYYY-MM-DD — short title
+- Context:
+- What went wrong:
+- Root cause:
+- Fix applied:
+- New rule:
+- Follow-up hardening:
+```
+
+---
+
+## 2026-03-19 — Image send vs internal image read
+- Context:
+  - The user asked for an image/diagram to be actually visible in Discord.
+- What went wrong:
+  - The workflow stopped at internal file generation / inspection and I responded as if the image had been attached.
+- Root cause:
+  - I treated local file existence as equivalent to successful channel delivery.
+  - I also underestimated the difference between `read(image)` and real Discord media upload.
+- Fix applied:
+  - Confirmed that Discord-visible delivery must use `openclaw message send --media`.
+  - Confirmed local media must often be staged under `~/.openclaw/media/` because `workspace-*` paths can be rejected.
+- New rule:
+  - Never say an image/file was sent until the actual send command returns success.
+  - `read(image)` is internal inspection only.
+- Follow-up hardening:
+  - Added Discord/media delivery rules to workspace operating notes and local Discord skill guidance.
+
+## 2026-03-19 — Wrong repo selected for git work
+- Context:
+  - A refactor was supposed to land in the user's working repo (`bkclaw`).
+- What went wrong:
+  - I first cloned upstream `openclaw/openclaw` and started planning there.
+- Root cause:
+  - I inferred the target repo from upstream metadata instead of checking the actual workspace git remote first.
+- Fix applied:
+  - Located the real workspace repo at `~/.openclaw/workspace` and confirmed its remote was `bokyoung96/bkclaw`.
+- New rule:
+  - Before repo work, check the real workspace repo / branch / remote first.
+  - Do not assume upstream source repo is the intended destination.
+- Follow-up hardening:
+  - Added repo-aware git helpers, worktree-based refactor flow, and git channel notifications.
+
+## 2026-03-19 — Push failed because env-backed auth was not loaded
+- Context:
+  - Git push should have worked because credentials already existed in `.env`.
+- What went wrong:
+  - Push initially failed and I misinterpreted it as missing GitHub auth.
+- Root cause:
+  - The credential helper depended on `GITHUB_TOKEN`, but the shell/process used for push had not loaded `.env`.
+- Fix applied:
+  - Loaded `.env`, verified credential helper behavior, and later added shared env-loading helpers and git wrappers.
+- New rule:
+  - Treat auth failures as two separate questions:
+    1. does the credential exist?
+    2. is it actually loaded into the current runtime?
+- Follow-up hardening:
+  - Added env helpers, git push wrapper, GitHub CLI helpers, and documentation.
+
+## 2026-03-19 — PR automation blocked by token scope mismatch
+- Context:
+  - Git push worked, but `gh pr create` failed.
+- What went wrong:
+  - I had working repo auth for push but not enough GitHub API permission for PR creation.
+- Root cause:
+  - The personal access token had insufficient GraphQL/PR write permission for `createPullRequest`.
+- Fix applied:
+  - Replaced the token with one that supports repository contents + pull request write access.
+- New rule:
+  - Verify both git transport auth and GitHub API/GraphQL auth when introducing `gh` automation.
+- Follow-up hardening:
+  - Added `gh` helpers and repo-specific GitHub CLI automation docs.
+
+## 2026-03-19 — Layout assumptions need executable checks
+- Context:
+  - Repository cleanup reduced root clutter, but intended structure could drift again later.
+- What went wrong:
+  - Layout expectations remained mostly implicit until a self-check was added.
+- Root cause:
+  - Structural cleanliness was documented, but not yet enforced by a quick executable check.
+- Fix applied:
+  - Added `scripts/check_workspace_layout.py` and documented allowed root directories.
+- New rule:
+  - If a cleanup rule matters operationally, encode it as a helper or test.
+- Follow-up hardening:
+  - Keep the layout check updated when the intended root structure evolves.
