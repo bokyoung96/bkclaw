@@ -6,7 +6,8 @@ Treat oh-my-codex (OMX) as an operational runtime that should be launched consis
 
 ## Local source
 
-- vendored path: `external/oh-my-codex`
+- active local checkout path: `/home/node/.openclaw/workspace/external/oh-my-codex`
+- wrapper override: `OMX_DIR=/custom/path ./bin/omx ...`
 
 ## User-facing command
 

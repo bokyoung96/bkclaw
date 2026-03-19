@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OMX_DIR="${OMX_DIR:-$ROOT_DIR/external/oh-my-codex}"
+OMX_DIR="${OMX_DIR:-/home/node/.openclaw/workspace/external/oh-my-codex}"
 
 if [ ! -d "$OMX_DIR" ]; then
   echo "[omx] oh-my-codex directory not found: $OMX_DIR" >&2
