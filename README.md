@@ -330,6 +330,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0019-tavily-research-lane.md`
 - `docs/refactor/0020-omx-baseline.md`
 - `docs/refactor/0021-branch-cleanup-policy.md`
+- `docs/refactor/0022-tavily-omx-readiness.md`
 
 ---
 
