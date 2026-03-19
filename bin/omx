@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OMX_DIR="${OMX_DIR:-/home/node/.openclaw/workspace/external/oh-my-codex}"
+OMX_DIR="${OMX_DIR:-$ROOT_DIR/external/oh-my-codex}"
+GLOBAL_OMX_BIN="${GLOBAL_OMX_BIN:-$HOME/.local/bin/omx}"
+
+if [ -x "$GLOBAL_OMX_BIN" ]; then
+  exec "$GLOBAL_OMX_BIN" "$@"
+fi
+
+if command -v omx >/dev/null 2>&1; then
+  exec "$(command -v omx)" "$@"
+fi
 
 if [ ! -d "$OMX_DIR" ]; then
-  echo "[omx] oh-my-codex directory not found: $OMX_DIR" >&2
+  echo "[omx] no global omx found and oh-my-codex directory not found: $OMX_DIR" >&2
   exit 1
 fi
 

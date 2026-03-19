@@ -117,6 +117,13 @@ cp ~/.openclaw/workspace/.env.example ~/.openclaw/workspace/.env
 python3 scripts/check_trusted_elevated_policy.py
 ```
 
+### OMX / Ralph 실행
+```bash
+./bin/omx --version
+./bin/ralph "fix the scoped task with persistent verification"
+./bin/ralph --prd "ship the operator workflow with acceptance criteria"
+```
+
 ---
 
 ## 6. 형이 나를 재시작할 때 보는 명령어
