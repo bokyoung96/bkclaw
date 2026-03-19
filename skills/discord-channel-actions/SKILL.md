@@ -47,6 +47,9 @@ When helping with notices/announcements, prefer:
 
 Keep notice titles short, bold, and operational.
 
+If the user explicitly asks for a notice rewrite (for example "공지로 정리해줘"), do **not** answer in regular assistant prose first. Return the notice draft directly.
+See also: `skills/notice-channel-formatting/`.
+
 ## Git channel formatting
 
 For git operational updates, keep messages short and structured:
