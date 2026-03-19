@@ -30,8 +30,7 @@ esac
 
 MESSAGE="$EMOJI **bkclaw git update**"
 if [ -n "$BRANCH" ]; then
-  MESSAGE="$MESSAGE\n- branch: \
-\\`$BRANCH\\`"
+  MESSAGE="$MESSAGE\n- branch: $BRANCH"
 fi
 MESSAGE="$MESSAGE\n- action: $ACTION"
 if [ -n "$DETAIL" ]; then
