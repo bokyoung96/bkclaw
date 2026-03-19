@@ -283,6 +283,8 @@ cd ~/.openclaw/workspace
 - legacy script env/path/db 중복 제거 시작
 - root file reduction (`bin/`, `scripts/` 중심)
 - Docker runtime PATH 반영
+- README / restart runbook / workspace layout self-check 추가
+- retrospective log 도입
 
 남은 큰 축:
 - 남은 legacy scripts 추가 공통화
@@ -298,7 +300,7 @@ cd ~/.openclaw/workspace
 1. `README.md`
 2. `.env.example`
 3. `Dockerfile.gaejae`
-4. `docs/refactor/0001-*.md` ~ `0012-*.md`
+4. `docs/refactor/0001-*.md` ~ `0017-*.md`
 5. `bin/` and `scripts/`
 6. `src/`
 
@@ -318,6 +320,11 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0010-root-file-reduction.md`
 - `docs/refactor/0011-docker-runtime-paths.md`
 - `docs/refactor/0012-operational-layout.md`
+- `docs/refactor/0013-restart-runbook.md`
+- `docs/refactor/0014-readme-standard.md`
+- `docs/refactor/0015-workspace-layout-check.md`
+- `docs/refactor/0016-final-ops-baseline.md`
+- `docs/refactor/0017-retrospective-log.md`
 
 ---
 
