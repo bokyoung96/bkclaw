@@ -25,7 +25,16 @@ Notify this channel when a meaningful git milestone completes:
 ## Message style
 
 Keep messages short and operational:
+- emoji by event type
 - branch name
 - action
+- detail line when relevant
 - PR number/link when relevant
 - merge result when relevant
+
+Preferred examples:
+- `🌱` branch created
+- `📤` push complete
+- `🔀` PR created
+- `✅` merge complete
+- `🧹` branch cleanup

@@ -215,7 +215,12 @@ cd ~/.openclaw/workspace
 
 관련 helper:
 ```bash
-./scripts/notify_git_channel.sh "[bkclaw] push complete - branch=..."
+./scripts/notify_git_channel.sh push-complete <branch> "commits=... focus=..."
+```
+
+push 전에 추천:
+```bash
+./scripts/pre_push_refactor_check.sh
 ```
 
 ### GitHub CLI
