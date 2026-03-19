@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Literal
 import json
 
+from src.common.runtime import RuntimeContext, resolve_runtime_context
+
 BacktestMode = Literal["fast", "deep"]
 ValidationLevel = Literal["PASS", "WARN", "FAIL"]
 
@@ -26,8 +28,13 @@ class BacktestSpec:
     outputs: list[str] = field(default_factory=lambda: ["summary", "plots"])
     mode: BacktestMode = "fast"
 
+    def runtime_context(self) -> RuntimeContext:
+        return resolve_runtime_context(mode=self.mode, purpose="backtest", tags=(self.strategy_name,))
+
     def to_dict(self) -> dict:
-        return asdict(self)
+        payload = asdict(self)
+        payload["runtime_context"] = self.runtime_context().to_dict()
+        return payload
 
 
 @dataclass

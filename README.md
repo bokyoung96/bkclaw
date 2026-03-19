@@ -2,6 +2,15 @@
 
 Python 기반 퀀트 리서치 워크스페이스.
 
+## Refactor guardrails
+- 스크립트는 얇게, 재사용 로직은 `src/`로 이동
+- 실행 모드/목적은 공통 runtime context로 표현
+- 산출물은 canonical artifact 규칙으로 정리
+- 사람에게 보내는 메시지는 structured report 객체에서 생성
+- 공유 규칙을 도입할 때는 unit test까지 같이 추가
+
+세부 원칙은 `docs/refactor/0001-architecture-principles.md` 참고.
+
 ## 목적
 - 외부 데이터 적재
 - 논문 아이디어 구현
