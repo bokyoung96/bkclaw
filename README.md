@@ -10,6 +10,8 @@ Python 기반 퀀트 리서치 워크스페이스.
 - 공유 규칙을 도입할 때는 unit test까지 같이 추가
 
 세부 원칙은 `docs/refactor/0001-architecture-principles.md` 참고.
+운영/credential/config 규칙은 `docs/refactor/0002-ops-config-and-credential-rules.md`, `docs/refactor/0003-git-and-env-helpers.md` 참고.
+Docker/cleanup 원칙은 `docs/refactor/0004-docker-build-rules.md`, `docs/refactor/0005-workspace-cleanup-rules.md` 참고.
 
 ## 목적
 - 외부 데이터 적재

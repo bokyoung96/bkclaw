@@ -2,9 +2,10 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=./lib/load_env.sh
+. "$ROOT_DIR/scripts/lib/docker_env.sh"
 IMAGE_TAG="${IMAGE_TAG:-gaejae-v1:latest}"
 DOCKERFILE_PATH="${DOCKERFILE_PATH:-$ROOT_DIR/Dockerfile.gaejae}"
-CLOUDFLARED_VERSION="${CLOUDFLARED_VERSION:-2026.2.1}"
 
 if [ ! -f "$DOCKERFILE_PATH" ]; then
   echo "[ERROR] Dockerfile not found: $DOCKERFILE_PATH" >&2
@@ -15,11 +16,13 @@ cd "$ROOT_DIR"
 
 echo "[build] dockerfile=$DOCKERFILE_PATH"
 echo "[build] image_tag=$IMAGE_TAG"
-echo "[build] cloudflared_version=$CLOUDFLARED_VERSION"
+echo "[build] cloudflared_version=${CLOUDFLARED_VERSION:-2026.2.1}"
+
+readarray -t BUILD_ARGS < <(resolve_docker_build_args)
 
 docker build \
   -f "$DOCKERFILE_PATH" \
-  --build-arg CLOUDFLARED_VERSION="$CLOUDFLARED_VERSION" \
+  "${BUILD_ARGS[@]}" \
   -t "$IMAGE_TAG" \
   .
 
