@@ -15,8 +15,8 @@ Create a practical Discord workspace structure for ongoing research work.
    - Prefer a small number of channels first.
 
 2. Propose a phased channel structure.
-   - Start with 3-5 channels.
-   - Add implementation or archive channels only after the first set proves useful.
+   - Start with the channels that already exist and reflect the real workspace before proposing new ones.
+   - Add implementation or archive channels only after the current set proves useful.
    - Prefer channel roles over premature multi-agent splits.
 
 3. Check execution constraints before claiming automation.
@@ -36,32 +36,38 @@ Create a practical Discord workspace structure for ongoing research work.
    - If channel creation is available, create channels carefully and report progress.
    - If not available, hand the user the minimum manual steps and continue with all post-creation setup text.
 
-## Recommended starting pattern
+## Current workspace pattern
 
-Use this default 4-channel structure for research-heavy users unless the user asks for something else:
+Prefer the real current channel structure before proposing a smaller default template.
+
+Current active channels in this workspace include:
 
 - `#main`
-  - Control tower
-  - Decisions, prioritization, direct requests
+  - shared lounge / common space
+- `#dev`
+  - private dev/debug/ops channel for the user and assistant
 - `#news-flow`
-  - News, filings, macro/event interpretation
+  - news, filings, macro/event interpretation
 - `#paper-flow`
-  - Paper scouting, summaries, implementation value triage
+  - paper scouting, summaries, implementation value triage
 - `#research-lab`
-  - Hypotheses, signal ideas, strategy discussion, experiment design
+  - hypotheses, signal ideas, strategy discussion, experiment design
+- `#kis-collector`
+  - collector/runtime operational lane
+- notice / announcement channels
+  - for structured operating notices such as **[공지]** / **[개선]** / **[점검]** / **[정리]** / **[변경]**
+- git notification channel
+  - short repo operational updates only
 
-Add these only when needed:
-
-- `#backtest-lab`
-- `#data-forge`
-- `#archive`
+If starting from scratch for another user, a 4-channel starter may still be reasonable, but this workspace should be described from its actual current structure first.
 
 ## Design rules
 
 - Prefer one main assistant with channel specialization before creating many real OpenClaw agents.
 - Treat internal sub-agents as thinking modes unless separate workspaces/routing are clearly needed.
-- Keep channel count low early.
+- Keep channel count low when starting fresh, but keep existing useful channels if they already have clear roles.
 - Separate collection channels from decision channels.
+- Keep notice / announcement channels stylistically consistent.
 - Write startup messages so the user can understand each channel instantly.
 - For research users, optimize for signal-to-noise, not completeness.
 
