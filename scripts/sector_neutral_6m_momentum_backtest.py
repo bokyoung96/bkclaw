@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from urllib.parse import quote_plus
 
@@ -8,7 +7,10 @@ import matplotlib.pyplot as plt
 from sqlalchemy import create_engine, text
 from topquant_ksk.db.tunnel import manage_db_tunnel, kill_tunnel
 
-OUTDIR = Path('/home/node/.openclaw/workspace/outputs/spy_sector_neutral_6m_momentum')
+from src.common.quant_db import load_quant_db_credentials
+
+ROOT = Path(__file__).resolve().parents[1]
+OUTDIR = ROOT / 'outputs' / 'spy_sector_neutral_6m_momentum'
 OUTDIR.mkdir(parents=True, exist_ok=True)
 
 COST_BPS = 15
@@ -18,10 +20,9 @@ UNIVERSE = 'SPY-US'
 
 
 def connect_engine():
-    user = os.getenv('QUANT_DB_USER')
-    password = os.getenv('QUANT_DB_PASSWORD')
+    creds = load_quant_db_credentials(ROOT)
     tunnel = manage_db_tunnel()
-    uri = f"postgresql://{user}:{quote_plus(password)}@127.0.0.1:15432/quant_data"
+    uri = f"postgresql://{creds.user}:{quote_plus(creds.password)}@127.0.0.1:15432/quant_data"
     engine = create_engine(uri)
     return tunnel, engine
 
