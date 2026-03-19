@@ -13,7 +13,9 @@ mkdir -p "$REPORT_DIR" "$STATE_DIR"
 IMAGE_SOURCE_TAG="${IMAGE_SOURCE_TAG:-gaejae-v1:latest}"
 COMPOSE_TARGET_TAG="${COMPOSE_TARGET_TAG:-openclaw:local}"
 CONTAINER_NAME="${CONTAINER_NAME:-openclaw-openclaw-gateway-1}"
-COMPOSE_CMD="${COMPOSE_CMD:-docker compose}"
+COMPOSE_FILE="${COMPOSE_FILE:-}"
+COMPOSE_DIR="${COMPOSE_DIR:-}"
+COMPOSE_BIN="${COMPOSE_BIN:-docker compose}"
 OPENCLAW_STATUS_CMD="${OPENCLAW_STATUS_CMD:-openclaw status}"
 DB_CHECK_SCRIPT="$ROOT_DIR/scripts/check_quant_db.sh"
 TIME_ZONE="${TIME_ZONE:-Asia/Seoul}"
@@ -24,6 +26,8 @@ PIP_SNAPSHOT="$STATE_DIR/pip-freeze.current.txt"
 PIP_DIFF_FILE="$STATE_DIR/pip-freeze.diff.txt"
 NOW_HUMAN="$(TZ="$TIME_ZONE" date '+%Y-%m-%d %H:%M:%S %Z')"
 DEV_SEND_LOG="$STATE_DIR/dev_channel_send_$TIMESTAMP.log"
+RUNTIME_CONTROLLER="unknown"
+COMPOSE_CMD=""
 
 STEP="init"
 RESULT="SUCCESS"
@@ -68,6 +72,8 @@ write_report() {
 - Step: $DISPLAY_STEP
 - Failure Reason: ${FAIL_REASON:-none}
 - Next Action: $NEXT_ACTION
+- Runtime Controller: $RUNTIME_CONTROLLER
+- Compose File: ${COMPOSE_FILE:-none}
 - Source Image Tag: $IMAGE_SOURCE_TAG
 - Compose Target Tag: $COMPOSE_TARGET_TAG
 - Container: $CONTAINER_NAME
@@ -90,6 +96,7 @@ EOF
 - Time: $NOW_HUMAN
 - Result: $RESULT
 - Step: $DISPLAY_STEP
+- Runtime Controller: $RUNTIME_CONTROLLER
 - Container Image: $IMAGE_NAME
 - Health: $HEALTH_STATUS
 - Cloudflared: $CLOUDFLARED_STATUS
@@ -113,26 +120,75 @@ send_dev_summary() {
   fi
 }
 
-run_step() {
-  STEP="$1"
-  shift
-  "$@"
+resolve_compose_file() {
+  if [ -n "$COMPOSE_FILE" ] && [ -f "$COMPOSE_FILE" ]; then
+    return 0
+  fi
+
+  local candidates=(
+    "$ROOT_DIR/compose.yml"
+    "$ROOT_DIR/compose.yaml"
+    "$ROOT_DIR/docker-compose.yml"
+    "$ROOT_DIR/docker-compose.yaml"
+    "/home/node/.openclaw/compose.yml"
+    "/home/node/.openclaw/compose.yaml"
+    "/home/node/.openclaw/docker-compose.yml"
+    "/home/node/.openclaw/docker-compose.yaml"
+    "/app/compose.yml"
+    "/app/compose.yaml"
+    "/app/docker-compose.yml"
+    "/app/docker-compose.yaml"
+  )
+
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [ -f "$candidate" ]; then
+      COMPOSE_FILE="$candidate"
+      return 0
+    fi
+  done
+
+  return 1
 }
 
-STEP="tag-image"
-docker tag "$IMAGE_SOURCE_TAG" "$COMPOSE_TARGET_TAG"
-IMAGE_ID="$(docker image inspect "$COMPOSE_TARGET_TAG" --format '{{.Id}}')"
+restart_runtime() {
+  if resolve_compose_file; then
+    RUNTIME_CONTROLLER="docker-compose"
+    COMPOSE_DIR="$(cd "$(dirname "$COMPOSE_FILE")" && pwd)"
+    COMPOSE_CMD="$COMPOSE_BIN -f $COMPOSE_FILE"
+    STEP="tag-image"
+    docker tag "$IMAGE_SOURCE_TAG" "$COMPOSE_TARGET_TAG"
+    IMAGE_ID="$(docker image inspect "$COMPOSE_TARGET_TAG" --format '{{.Id}}')"
 
-STEP="compose-down"
-$COMPOSE_CMD down >/dev/null
+    STEP="compose-down"
+    (cd "$COMPOSE_DIR" && $COMPOSE_CMD down >/dev/null)
 
-STEP="compose-up"
-$COMPOSE_CMD up -d >/dev/null
+    STEP="compose-up"
+    (cd "$COMPOSE_DIR" && $COMPOSE_CMD up -d >/dev/null)
+    return 0
+  fi
+
+  if command -v openclaw >/dev/null 2>&1; then
+    RUNTIME_CONTROLLER="openclaw-gateway-service"
+    STEP="gateway-restart"
+    openclaw gateway restart >/dev/null
+    return 0
+  fi
+
+  RESULT="FAIL"
+  FAIL_REASON="no compose file found and openclaw gateway CLI unavailable"
+  NEXT_ACTION="set COMPOSE_FILE explicitly or install/configure openclaw gateway service"
+  write_report
+  cat "$REPORT_FILE"
+  exit 1
+}
+
+restart_runtime
 
 STEP="container-image"
 IMAGE_NAME="$(docker inspect "$CONTAINER_NAME" --format '{{.Config.Image}}')"
 CONTAINER_IMAGE_ID="$(docker inspect "$CONTAINER_NAME" --format '{{.Image}}')"
-if [ "$IMAGE_NAME" != "$COMPOSE_TARGET_TAG" ]; then
+if [ "$RUNTIME_CONTROLLER" = "docker-compose" ] && [ "$IMAGE_NAME" != "$COMPOSE_TARGET_TAG" ]; then
   RESULT="FAIL"
   FAIL_REASON="container image mismatch: expected $COMPOSE_TARGET_TAG got $IMAGE_NAME"
   NEXT_ACTION="check compose service image configuration"
@@ -153,7 +209,7 @@ while true; do
   if [ "$HEALTH_STATUS" = "unhealthy" ]; then
     RESULT="FAIL"
     FAIL_REASON="container health is unhealthy"
-    NEXT_ACTION="review docker compose logs for gateway"
+    NEXT_ACTION="review docker/runtime logs for gateway"
     write_report
     cat "$REPORT_FILE"
     exit 1
@@ -161,7 +217,7 @@ while true; do
   if [ "$HEALTH_ELAPSED" -ge "$HEALTH_WAIT_SECONDS" ]; then
     RESULT="FAIL"
     FAIL_REASON="container health remained $HEALTH_STATUS after ${HEALTH_WAIT_SECONDS}s"
-    NEXT_ACTION="review docker compose logs for gateway"
+    NEXT_ACTION="review docker/runtime logs for gateway"
     write_report
     cat "$REPORT_FILE"
     exit 1
