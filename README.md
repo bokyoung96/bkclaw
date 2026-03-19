@@ -291,6 +291,7 @@ cd ~/.openclaw/workspace
 - delivery / notification 계층 추가 통합
 - validation policy 세분화
 - outputs / reports 경로 일원화
+- Tavily research lane와 OMX orchestration lane의 실제 운용 결합 정교화
 
 ---
 
@@ -325,6 +326,10 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0015-workspace-layout-check.md`
 - `docs/refactor/0016-final-ops-baseline.md`
 - `docs/refactor/0017-retrospective-log.md`
+- `docs/refactor/0018-agent-lane-model.md`
+- `docs/refactor/0019-tavily-research-lane.md`
+- `docs/refactor/0020-omx-baseline.md`
+- `docs/refactor/0021-branch-cleanup-policy.md`
 
 ---
 
