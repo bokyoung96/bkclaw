@@ -28,6 +28,8 @@ RUN set -eux; \
 
 USER node
 
+ENV PATH="/home/node/.openclaw/workspace/bin:/home/node/.local/bin:${PATH}"
+
 LABEL org.opencontainers.image.title="gaejae-openclaw"
 LABEL org.opencontainers.image.description="Repeatable OpenClaw image for 가재 with cloudflared preinstalled"
 LABEL org.opencontainers.image.source="workspace/Dockerfile.gaejae"
