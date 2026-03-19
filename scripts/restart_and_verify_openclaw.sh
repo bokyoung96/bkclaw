@@ -2,12 +2,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-ENV_FILE="${ENV_FILE:-$ROOT_DIR/.env}"
-if [ -f "$ENV_FILE" ]; then
-  set -a
-  . "$ENV_FILE"
-  set +a
-fi
+# shellcheck source=./lib/load_env.sh
+. "$ROOT_DIR/scripts/lib/load_env.sh"
+load_workspace_env
 
 REPORT_DIR="$ROOT_DIR/logs/openclaw_restart_reports"
 STATE_DIR="$ROOT_DIR/logs/openclaw_runtime_state"
