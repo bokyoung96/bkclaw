@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# shellcheck source=../scripts/lib/entrypoint.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/lib/entrypoint.sh"
+run_repo_script "${BASH_SOURCE[0]}" "scripts/build_gaejae_image.sh" "$@"

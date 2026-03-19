@@ -5,12 +5,10 @@ import sys
 from src.reporting.discord_sender import send_discord_message
 
 
-def main():
+def main() -> None:
     payload = json.load(sys.stdin)
-
     if payload.get("action") != "dispatch_discord_message":
         raise SystemExit("invalid action")
-
     send_discord_message(payload["channel_name"], payload["message"])
 
 
