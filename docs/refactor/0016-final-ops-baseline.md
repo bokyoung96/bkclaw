@@ -18,4 +18,5 @@ cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ./bin/check_gaejae_db
 python3 scripts/check_workspace_layout.py
+./scripts/pre_push_refactor_check.sh
 ```
