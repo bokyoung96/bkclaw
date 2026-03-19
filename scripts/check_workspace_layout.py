@@ -23,10 +23,13 @@ ALLOWED_ROOT_PREFIXES = (
     ".",
     "avatars",
     "bin",
+    "configs",
     "dags",
     "docs",
     "memory",
+    "reports",
     "scripts",
+    "skills",
     "src",
     "tests",
 )
