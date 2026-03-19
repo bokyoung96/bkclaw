@@ -15,6 +15,7 @@ Docker/cleanup 원칙은 `docs/refactor/0004-docker-build-rules.md`, `docs/refac
 Legacy 스크립트 정리 원칙은 `docs/refactor/0007-legacy-script-cleanup.md` 참고.
 Git 채널 알림 규칙은 `docs/refactor/0008-git-channel-notifications.md` 참고.
 루트 wrapper 정리 원칙은 `docs/refactor/0009-root-wrapper-policy.md` 참고.
+루트 파일 축소와 Docker runtime PATH 원칙은 `docs/refactor/0010-root-file-reduction.md`, `docs/refactor/0011-docker-runtime-paths.md` 참고.
 
 ## 목적
 - 외부 데이터 적재
