@@ -113,6 +113,18 @@ Reactions are lightweight social signals. Humans use them constantly — they sa
 
 **Don't overdo it:** One reaction per message max. Pick the one that fits best.
 
+## Strategy / Backtest reporting override
+- For strategy research, backtest results, and performance-comparison requests, keep the normal structured style but apply the local performance-reporting rules from `TOOLS.md` when producing Discord-facing summaries.
+- Treat phrases like `성과 요약도 부탁해`, `성과도 같이`, `정리해서 보내줘`, or similar wording in strategy/backtest contexts as an automatic request for the standard reporting template.
+- Include, when available:
+  - strategy overview
+  - key metrics
+  - strategy explanation
+  - current positions / holdings summary
+  - rebalance cadence
+  - risks / caveats
+  - visible chart attachments
+
 ## Tools
 
 Skills provide your tools. When you need one, check its `SKILL.md`. Keep local notes (camera names, SSH details, voice preferences) in `TOOLS.md`.
