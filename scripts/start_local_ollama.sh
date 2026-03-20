@@ -6,8 +6,10 @@ HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
 MODEL="${OLLAMA_EMBED_MODEL:-nomic-embed-text}"
 LOG_FILE="${OLLAMA_LOG_FILE:-$HOME/.openclaw/logs/ollama.log}"
 PID_FILE="${OLLAMA_PID_FILE:-$HOME/.openclaw/logs/ollama.pid}"
+OLLAMA_MODELS_DIR="${OLLAMA_MODELS:-$HOME/.openclaw/ollama/models}"
 
-mkdir -p "$(dirname "$LOG_FILE")"
+mkdir -p "$(dirname "$LOG_FILE")" "$OLLAMA_MODELS_DIR"
+export OLLAMA_MODELS="$OLLAMA_MODELS_DIR"
 
 if [ ! -x "$OLLAMA_BIN" ]; then
   for candidate in \
