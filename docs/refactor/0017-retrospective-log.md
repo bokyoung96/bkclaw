@@ -118,3 +118,33 @@ Add entries when one of these happens:
   - Treat memory recall outages as first-class ops incidents: record them, keep a manual fallback path, and avoid assuming prior-state recovery is available.
 - Follow-up hardening:
   - Add a durable error/feature tracking entry so future debugging starts with provider quota/billing verification.
+
+## 2026-03-20 — Tool/runtime preflight must happen before claiming something is missing
+- Context:
+  - Live Discord work exposed repeated failures around Tavily, GitHub CLI / git auth, and research performance-report formatting.
+- What went wrong:
+  - I said tools were unavailable or work could not proceed before checking the current runtime properly.
+  - After the user reminded me that Tavily keys, `gh`, and git token setup already existed, I then confirmed they were in fact configured or recoverable.
+  - I also drifted away from the agreed research-lab performance summary/reporting format and improvised output instead of following the established template.
+- Root cause:
+  - I treated the first negative signal in the current shell as ground truth instead of separating:
+    1. installation/runtime visibility,
+    2. PATH exposure,
+    3. token/env injection,
+    4. host vs container path differences,
+    5. existing skills / operating rules,
+    6. existing reporting format requirements.
+  - I also allowed response speed and ad-hoc phrasing to override the saved operating format.
+- Fix applied:
+  - Added startup verification rules so `gh`, Tavily, and token-backed tools are checked first after Docker restart / new session / runtime reset.
+  - Restored memory-search functionality through the Ollama embedding provider path.
+  - Hardened Ollama bootstrap/install path handling so recall does not silently break on next restart.
+  - Recommitted to the fixed research/backtest/performance reporting template instead of ad-hoc formatting.
+- New rule:
+  - Never tell the user a previously-provisioned tool is missing until runtime visibility, PATH, env/token presence, host/container path differences, and related skills/config have all been checked.
+  - Never improvise the research-lab performance summary format when an agreed template/rule already exists.
+  - When uncertain, report `현재 런타임에서 아직 확인되지 않았습니다` first, then verify.
+- Follow-up hardening:
+  - Keep preflight checks ahead of conclusion statements.
+  - Keep reporting format checks ahead of writing performance summaries.
+  - Treat recurrence of this class of mistake as a process failure, not a one-off slip.
