@@ -19,9 +19,32 @@ cd "$TMP_DIR"
 
 echo "[install] version=$VERSION arch=$ARCH"
 curl -fL "https://ollama.com/download/ollama-linux-${ARCH}.tgz?version=${VERSION}" -o ollama.tgz
+rm -rf "$INSTALL_ROOT"
+mkdir -p "$INSTALL_ROOT"
 tar -xzf ollama.tgz -C "$INSTALL_ROOT"
-ln -sf "$INSTALL_ROOT/ollama" "$BIN_DIR/ollama"
+
+BIN_TARGET=""
+for candidate in \
+  "$INSTALL_ROOT/ollama" \
+  "$INSTALL_ROOT/bin/ollama"
+do
+  if [ -x "$candidate" ]; then
+    BIN_TARGET="$candidate"
+    break
+  fi
+done
+
+if [ -z "$BIN_TARGET" ]; then
+  echo "[ERROR] Unable to locate ollama binary under $INSTALL_ROOT" >&2
+  find "$INSTALL_ROOT" -maxdepth 3 -type f | sed -n '1,40p' >&2 || true
+  exit 1
+fi
+
+ln -sf "$BIN_TARGET" "$BIN_DIR/ollama"
+
+"$BIN_DIR/ollama" --version
 
 echo "[ok] installed to $INSTALL_ROOT"
+echo "[ok] binary target: $BIN_TARGET"
 echo "[ok] binary link: $BIN_DIR/ollama"
 echo "[next] run: ~/.openclaw/workspace/scripts/start_local_ollama.sh"

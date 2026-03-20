@@ -341,6 +341,11 @@ cd ~/.openclaw/workspace
   ./scripts/start_local_ollama.sh
   ```
 - 재빌드 후 컨테이너를 다시 올린 뒤에는 `ollama` 바이너리는 이미지에 포함된다.
+- 이미지/사용자 설치 경로 차이를 흡수하도록 `scripts/start_local_ollama.sh`가 아래 경로들을 자동 탐색한다:
+  - `~/.local/bin/ollama`
+  - `~/.local/lib/ollama/bin/ollama`
+  - `/usr/local/bin/ollama`
+  - `/usr/local/ollama`
 - 다만 `127.0.0.1:11434` 서버는 런타임에서 실제로 띄워져야 하므로, 필요 시 `./scripts/start_local_ollama.sh`를 한 번 실행한다.
 
 ---

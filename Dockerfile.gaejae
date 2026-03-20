@@ -31,7 +31,11 @@ RUN set -eux; \
     install -m 0755 "/tmp/gh_${GH_CLI_VERSION}_linux_${gh_arch}/bin/gh" /usr/local/bin/gh; \
     curl -fsSL "https://ollama.com/download/ollama-linux-${ollama_arch}.tgz?version=${OLLAMA_VERSION}" -o /tmp/ollama.tgz; \
     tar -xzf /tmp/ollama.tgz -C /usr/local; \
-    ln -sf /usr/local/ollama /usr/local/bin/ollama; \
+    if [ -x /usr/local/ollama ]; then ln -sf /usr/local/ollama /usr/local/bin/ollama; \
+    elif [ -x /usr/local/bin/bin/ollama ]; then ln -sf /usr/local/bin/bin/ollama /usr/local/bin/ollama; \
+    elif [ -x /usr/local/ollama/bin/ollama ]; then ln -sf /usr/local/ollama/bin/ollama /usr/local/bin/ollama; \
+    elif [ -x /usr/local/bin/ollama ]; then true; \
+    else find /usr/local -maxdepth 3 -name ollama -type f >&2; exit 1; fi; \
     cloudflared --version; \
     codex --version; \
     gh --version | head -n 1; \

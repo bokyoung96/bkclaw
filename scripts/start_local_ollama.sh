@@ -10,6 +10,21 @@ PID_FILE="${OLLAMA_PID_FILE:-$HOME/.openclaw/logs/ollama.pid}"
 mkdir -p "$(dirname "$LOG_FILE")"
 
 if [ ! -x "$OLLAMA_BIN" ]; then
+  for candidate in \
+    "$HOME/.local/bin/ollama" \
+    "$HOME/.local/lib/ollama/bin/ollama" \
+    "/usr/local/bin/ollama" \
+    "/usr/local/ollama" \
+    "$(command -v ollama 2>/dev/null || true)"
+  do
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      OLLAMA_BIN="$candidate"
+      break
+    fi
+  done
+fi
+
+if [ ! -x "$OLLAMA_BIN" ]; then
   echo "[ERROR] ollama binary not found: $OLLAMA_BIN" >&2
   echo "[next] run: ~/.openclaw/workspace/scripts/install_ollama_user.sh" >&2
   exit 1
