@@ -17,14 +17,12 @@ ARG OLLAMA_VERSION=0.7.0
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
     case "$arch" in \
-      amd64) cf_arch="amd64"; gh_arch="amd64"; ollama_arch="amd64" ;; \
-      arm64) cf_arch="arm64"; gh_arch="arm64"; ollama_arch="arm64" ;; \
+      amd64) gh_arch="amd64"; ollama_arch="amd64" ;; \
+      arm64) gh_arch="arm64"; ollama_arch="arm64" ;; \
       *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
     esac; \
     apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates curl tar; \
-    curl -fsSL "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-${cf_arch}" -o /usr/local/bin/cloudflared; \
-    chmod +x /usr/local/bin/cloudflared; \
+    apt-get install -y --no-install-recommends ca-certificates curl tar cloudflared; \
     npm install -g "@openai/codex@${CODEX_CLI_VERSION}"; \
     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_CLI_VERSION}/gh_${GH_CLI_VERSION}_linux_${gh_arch}.tar.gz" -o /tmp/gh.tgz; \
     tar -xzf /tmp/gh.tgz -C /tmp; \
