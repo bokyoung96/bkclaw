@@ -9,10 +9,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def run_legacy_script(script_name: str) -> subprocess.CompletedProcess[str]:
+def run_legacy_script(script_name: str, *script_args: str) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
+    env.setdefault("PYTHONPATH", str(ROOT))
     python = str(ROOT / ".venv" / "bin" / "python") if (ROOT / ".venv" / "bin" / "python").exists() else sys.executable
-    command = [python, str(ROOT / "scripts" / script_name)]
+    command = [python, str(ROOT / "scripts" / script_name), *script_args]
     return subprocess.run(command, cwd=ROOT, env=env, check=True, text=True, capture_output=True)
 
 
