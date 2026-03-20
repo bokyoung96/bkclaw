@@ -43,9 +43,9 @@ RESULT=$(openclaw message send \
   --message "$MESSAGE" \
   --json)
 
-echo "$RESULT" | python3 - <<'PY'
-import json, sys
-raw = sys.stdin.read().strip()
+RESULT_JSON="$RESULT" python3 - <<'PY'
+import json, os
+raw = os.environ.get("RESULT_JSON", "").strip()
 try:
     data = json.loads(raw)
 except Exception:
