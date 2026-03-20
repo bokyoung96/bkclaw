@@ -312,7 +312,7 @@ cd ~/.openclaw/workspace
 ### 역할 분리
 - `Dockerfile.gaejae`
   - 시스템 레벨 의존성
-  - cloudflared 같은 OS 레벨 바이너리
+  - cloudflared, ollama 같은 OS 레벨 바이너리
   - runtime PATH 기본값
 - `.env`
   - credential / channel target / runtime knobs
@@ -331,6 +331,17 @@ cd ~/.openclaw/workspace
 이유:
 - `bin/` 아래 사용자 명령 유지
 - `omx`, `gh` 같은 user-space CLI 유지
+
+### Ollama 메모리 복구 메모
+- 이미지 레벨 재현성은 `Dockerfile.gaejae`가 담당한다.
+- 현재 세션에서 바로 복구할 때는:
+  ```bash
+  cd ~/.openclaw/workspace
+  ./scripts/install_ollama_user.sh
+  ./scripts/start_local_ollama.sh
+  ```
+- 재빌드 후 컨테이너를 다시 올린 뒤에는 `ollama` 바이너리는 이미지에 포함된다.
+- 다만 `127.0.0.1:11434` 서버는 런타임에서 실제로 띄워져야 하므로, 필요 시 `./scripts/start_local_ollama.sh`를 한 번 실행한다.
 
 ---
 

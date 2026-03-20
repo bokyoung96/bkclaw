@@ -12,12 +12,13 @@ USER root
 ARG CLOUDFLARED_VERSION=2026.2.1
 ARG CODEX_CLI_VERSION=0.115.0
 ARG GH_CLI_VERSION=2.88.1
+ARG OLLAMA_VERSION=0.7.0
 
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
     case "$arch" in \
-      amd64) cf_arch="amd64"; gh_arch="amd64" ;; \
-      arm64) cf_arch="arm64"; gh_arch="arm64" ;; \
+      amd64) cf_arch="amd64"; gh_arch="amd64"; ollama_arch="amd64" ;; \
+      arm64) cf_arch="arm64"; gh_arch="arm64"; ollama_arch="arm64" ;; \
       *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
     esac; \
     apt-get update; \
@@ -28,10 +29,14 @@ RUN set -eux; \
     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_CLI_VERSION}/gh_${GH_CLI_VERSION}_linux_${gh_arch}.tar.gz" -o /tmp/gh.tgz; \
     tar -xzf /tmp/gh.tgz -C /tmp; \
     install -m 0755 "/tmp/gh_${GH_CLI_VERSION}_linux_${gh_arch}/bin/gh" /usr/local/bin/gh; \
+    curl -fsSL "https://ollama.com/download/ollama-linux-${ollama_arch}.tgz?version=${OLLAMA_VERSION}" -o /tmp/ollama.tgz; \
+    tar -xzf /tmp/ollama.tgz -C /usr/local; \
+    ln -sf /usr/local/ollama /usr/local/bin/ollama; \
     cloudflared --version; \
     codex --version; \
     gh --version | head -n 1; \
-    rm -rf /tmp/gh.tgz "/tmp/gh_${GH_CLI_VERSION}_linux_${gh_arch}"; \
+    /usr/local/bin/ollama --version; \
+    rm -rf /tmp/gh.tgz "/tmp/gh_${GH_CLI_VERSION}_linux_${gh_arch}" /tmp/ollama.tgz; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
