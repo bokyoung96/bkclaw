@@ -37,10 +37,25 @@ if [ -n "$DETAIL" ]; then
   MESSAGE="$MESSAGE\n- detail: $DETAIL"
 fi
 
-openclaw message send \
+RESULT=$(openclaw message send \
   --channel discord \
   --target "$TARGET_CHANNEL" \
   --message "$MESSAGE" \
-  --json >/dev/null
+  --json)
 
-echo "[git-notify] sent to $TARGET_CHANNEL"
+echo "$RESULT" | python3 - <<'PY'
+import json, sys
+raw = sys.stdin.read().strip()
+try:
+    data = json.loads(raw)
+except Exception:
+    print(raw)
+    raise
+result = (((data.get("payload") or {}).get("result")) or {})
+message_id = result.get("messageId")
+channel_id = result.get("channelId")
+if not message_id:
+    print(raw)
+    raise SystemExit(1)
+print(f"[git-notify] sent to {channel_id or 'unknown-channel'} messageId={message_id}")
+PY
