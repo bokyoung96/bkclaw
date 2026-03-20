@@ -42,9 +42,15 @@ RUN set -eux; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
+COPY scripts/entrypoint_gaejae.sh /usr/local/bin/entrypoint_gaejae.sh
+RUN chmod 0755 /usr/local/bin/entrypoint_gaejae.sh
+
 USER node
 
 ENV PATH="/home/node/.openclaw/workspace/bin:/home/node/.local/bin:${PATH}"
+ENV OLLAMA_AUTO_START=1
+
+ENTRYPOINT ["/usr/local/bin/entrypoint_gaejae.sh"]
 
 LABEL org.opencontainers.image.title="gaejae-openclaw"
 LABEL org.opencontainers.image.description="Repeatable OpenClaw image for 가재 with cloudflared preinstalled"
