@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+WORKSPACE_ENV_FILE="${ENV_FILE:-/home/node/.openclaw/workspace/.env}"
 OLLAMA_BOOTSTRAP_SCRIPT="/home/node/.openclaw/workspace/scripts/start_local_ollama.sh"
 OLLAMA_BOOTSTRAP_LOG="${HOME}/.openclaw/logs/ollama-bootstrap.log"
 OLLAMA_AUTO_START="${OLLAMA_AUTO_START:-1}"
+
+if [ -f "$WORKSPACE_ENV_FILE" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "$WORKSPACE_ENV_FILE"
+  set +a
+fi
 
 mkdir -p "$(dirname "$OLLAMA_BOOTSTRAP_LOG")"
 
