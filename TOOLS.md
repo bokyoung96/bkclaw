@@ -59,6 +59,22 @@ Things like:
   - active runtime env issue
   - provider/search execution issue
 
+## Long Task Progress Rules
+
+- For tasks likely to exceed about 10 minutes, provide explicit progress posture instead of going silent.
+- Separate status as one of:
+  - `IN_PROGRESS`
+  - `BLOCKED`
+  - `WAITING_ON_USER`
+  - `DONE`
+- For meaningful long tasks, prefer leaving a progress artifact under `logs/progress/` via `./bin/progress_note`.
+- Mid-task updates should mention:
+  - current phase
+  - what finished
+  - what is still running
+  - whether there is a blocker
+- Silence for the entire duration of a long task should be treated as a quality issue unless the user explicitly wants silent execution.
+
 ## Channel Delivery Rules
 
 - Distinguish clearly between:
