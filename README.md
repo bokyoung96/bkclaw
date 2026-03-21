@@ -224,6 +224,7 @@ python3 scripts/check_trusted_elevated_policy.py
   - 현재성 높은 자료 탐색
   - 논문/기사/source shortlisting
   - source tier 정리
+  - 빠른 current-awareness 확보
 - 기본 도구:
   - OpenClaw research agent
   - Tavily research (workspace `.env`의 `TAVILY_API_KEY` 기준)
@@ -242,6 +243,25 @@ Tavily 운영 원칙:
 - Tavily는 **research agent 전용 research lane**으로 본다.
 - `TAVILY_API_KEY`가 `.env`에 있어도, active runtime 반영 여부와 실제 search smoke test는 별도로 확인한다.
 - `키 존재`와 `실제 검색 성공`을 같은 것으로 취급하지 않는다.
+- 이 lane은 기본적으로 **빠른 탐색/shortlisting** 쪽에 최적화한다.
+
+### Lane A-2. Deep research lane
+- 목적:
+  - 심층 리서치
+  - source triangulation
+  - thesis / anti-thesis 정리
+  - paper / article / docs / news cross-check
+  - 구현 관점 번역
+- 기본 skill:
+  - `skills/deep-research-lane/`
+- 사용할 때:
+  - 형이 `심층 리서치`, `깊게`, `자세히`, `반대 근거도`, `리스크까지` 같은 요구를 할 때
+  - 단순 shortlist보다 해석/반론/제약조건이 중요할 때
+- 기본 출력 추가 요소:
+  - thesis
+  - counter-thesis
+  - weakest assumption
+  - what would change the conclusion
 
 ### Lane B. Python backtest lane
 - 목적:
@@ -281,6 +301,16 @@ Tavily 운영 원칙:
   - `codex exec ...`
 - 사용할 때:
   - Ralph/team까지는 과한데 Codex 자체 실행은 필요할 때
+
+### agent 구조 제안
+- `main`
+  - 운영 총괄 / 일반 대화 / 최종 보고
+- `research`
+  - 빠른 웹 리서치 / shortlist / current-awareness
+- `deep-research` (후보)
+  - 심층 조사 / 장문 synthesis / source triangulation
+- `reviewer` (후보)
+  - 과장 방지 / 반대 근거 / 품질 검토
 
 ### 기본 운영 원칙
 - research 질의 → **Research lane 우선**
@@ -611,6 +641,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0035-output-and-artifact-path-conventions.md`
 - `docs/refactor/0036-main-memory-indexing-followup.md`
 - `skills/tavily-research-lane/SKILL.md`
+- `skills/deep-research-lane/SKILL.md`
 
 ---
 
