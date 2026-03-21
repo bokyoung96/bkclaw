@@ -1,22 +1,35 @@
 {
   "strategy_name": "quant_db_momentum_fast",
-  "hypothesis": "12개월 모멘텀 상위 종목이 향후에도 초과수익을 낸다.",
-  "universe": "SPY-US",
+  "hypothesis": "상대적으로 강한 가격 추세와 거래량 확인이 결합된 종목은 단기적으로 추세 지속 확률이 높을 수 있다.",
+  "universe": "top_liquid_us_equities",
   "datasource": "quant_db",
   "frequency": "daily",
-  "start_date": "2000-01-01",
-  "end_date": "2025-12-31",
+  "start_date": "2020-01-01",
+  "end_date": "2026-01-01",
   "rebalance_rule": "monthly",
   "execution_assumption": "close_to_close",
-  "cost_bps": 15.0,
-  "slippage_bps": 0.0,
+  "cost_bps": 5.0,
+  "slippage_bps": 5.0,
   "constraints": [
-    "equal_weight_top_decile"
+    "liquidity filter",
+    "top N holdings",
+    "no leverage"
   ],
-  "outputs": [
-    "summary",
-    "plots",
-    "validation"
+  "outputs": ["summary", "plots"],
+  "mode": "fast",
+  "economic_rationale": [
+    "가격 모멘텀은 정보 확산과 투자자 지연 반응 때문에 단기~중기 지속성이 나타날 수 있다.",
+    "거래량 증가는 단순 가격 돌파보다 더 강한 시장 참여/합의 신호일 수 있다.",
+    "유동성 필터를 넣으면 마이크로캡 노이즈와 실행불가능성을 줄일 수 있다."
   ],
-  "mode": "fast"
+  "rationale_risks": [
+    "거래량 자체가 구조적으로 왜곡될 수 있다.",
+    "강한 추세 추종은 급격한 reversal 구간에서 손실이 커질 수 있다.",
+    "regime 변화 시 edge가 약해질 수 있다."
+  ],
+  "source_links": [
+    "https://altfins.com/knowledge-base/crypto-volume-tracker-spot-unusual-volume/",
+    "https://www.altrady.com/blog/crypto-trading-strategies/momentum-trading-strategy",
+    "https://www.osl.com/hk-en/academy/article/how-to-use-volume-in-crypto-trading"
+  ]
 }

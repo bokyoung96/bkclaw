@@ -200,6 +200,11 @@ Tavily 사용 원칙:
 ./scripts/mark_image_baseline.sh
 ```
 
+### 백테스트 packet (Markdown + PDF) 생성
+```bash
+python3 scripts/generate_backtest_packet.py reports/backtests/<run_dir>
+```
+
 ### trusted elevated 정책 검증
 ```bash
 python3 scripts/check_trusted_elevated_policy.py
@@ -323,8 +328,10 @@ Tavily 운영 원칙:
   - 과장 방지 / 반대 근거 / 품질 검토
 - `backtest` (추천 추가 후보)
   - 전략 구현 / 실험 / 백테스트 실행
+  - run artifact 생성
 - `performance-review` (추천 추가 후보)
   - 성과 해석 / 보고 포맷 / 리스크 점검
+  - economic rationale / source links / PDF packet 정리
 
 ### 기본 운영 원칙
 - research 질의 → **Research lane 우선**

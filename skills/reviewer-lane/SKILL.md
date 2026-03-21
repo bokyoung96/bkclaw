@@ -29,6 +29,7 @@ Use this lane when:
 - the user asks for risk review or 반대 근거
 - a deep-research synthesis needs challenge before adoption
 - implementation/reporting quality matters more than speed
+- a backtest/performance report needs an extra quality gate before sharing
 
 ## Review checklist
 
