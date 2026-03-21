@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROGRESS_NOTE="$ROOT_DIR/bin/progress_note"
+MESSAGE_BIN="openclaw message send"
+
+TASK_NAME="${TASK_NAME:-long-task}"
+CHANNEL="${CHANNEL:-discord}"
+TARGET="${TARGET:-}"
+INTERVAL_SECONDS="${INTERVAL_SECONDS:-600}"
+STEP="${STEP:-starting}"
+DETAIL="${DETAIL:-}"
+START_MSG="${START_MSG:-}"
+DONE_MSG="${DONE_MSG:-}"
+BLOCKED_MSG="${BLOCKED_MSG:-}"
+
+if [ -z "$TARGET" ]; then
+  echo "[error] TARGET is required (example: channel:1482514790768447590)" >&2
+  exit 1
+fi
+
+if [ $# -eq 0 ]; then
+  echo "[error] command to run is required" >&2
+  exit 1
+fi
+
+send_msg() {
+  local body="$1"
+  $MESSAGE_BIN --channel "$CHANNEL" --target "$TARGET" --message "$body" >/dev/null
+}
+
+export TASK_NAME
+export STATUS="IN_PROGRESS"
+export STEP
+export BLOCKER=""
+"$PROGRESS_NOTE" "${DETAIL:-task started}" >/dev/null
+
+send_msg "[진행] ⏳
+
+- 작업: $TASK_NAME
+- 상태: IN_PROGRESS
+- 단계: $STEP
+- 상세: ${START_MSG:-${DETAIL:-작업을 시작했습니다}}
+- 중간보고: 약 ${INTERVAL_SECONDS}초 간격으로 전달 예정"
+
+set +e
+(
+  "$@"
+) &
+CMD_PID=$!
+set -e
+
+LAST_DETAIL="${DETAIL:-running}"
+while kill -0 "$CMD_PID" 2>/dev/null; do
+  sleep "$INTERVAL_SECONDS"
+  if ! kill -0 "$CMD_PID" 2>/dev/null; then
+    break
+  fi
+  export STATUS="IN_PROGRESS"
+  export STEP="${STEP:-running}"
+  "$PROGRESS_NOTE" "$LAST_DETAIL" >/dev/null
+  send_msg "[진행] ⏳
+
+- 작업: $TASK_NAME
+- 상태: IN_PROGRESS
+- 단계: ${STEP:-running}
+- 상세: ${LAST_DETAIL:-계속 진행 중입니다}
+- 비고: 아직 작업이 살아 있습니다"
+done
+
+wait "$CMD_PID"
+RC=$?
+
+if [ "$RC" -eq 0 ]; then
+  export STATUS="DONE"
+  export STEP="done"
+  "$PROGRESS_NOTE" "completed successfully" >/dev/null
+  send_msg "[완료] ✅
+
+- 작업: $TASK_NAME
+- 상태: DONE
+- 단계: done
+- 상세: ${DONE_MSG:-작업이 완료되었습니다}"
+  exit 0
+fi
+
+export STATUS="BLOCKED"
+export STEP="failed"
+export BLOCKER="command exit code $RC"
+"$PROGRESS_NOTE" "command failed with exit code $RC" >/dev/null
+send_msg "[중단] ⚠️
+
+- 작업: $TASK_NAME
+- 상태: BLOCKED
+- 단계: failed
+- 상세: ${BLOCKED_MSG:-작업이 중단되었거나 실패했습니다}
+- blocker: command exit code $RC"
+exit "$RC"
