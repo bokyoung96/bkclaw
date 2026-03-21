@@ -14,25 +14,18 @@ Use this skill when one agent should not do everything.
 - owns branch / PR / merge decisions for repo work
 
 ### 2. Research lane
-- owns Tavily, web search, paper scouting, source shortlist, currentness checks
-- is optimized for fast scan / shortlist / freshness
+- owns Tavily, web search, source shortlist, deep synthesis, and browser escalation
+- primary skill: `skills/research-lane/`
+- runs in quick scan mode by default, then deepens only when needed
 
-### 3. Deep research lane
-- owns multi-source triangulation, long-form synthesis, thesis vs anti-thesis, and uncertainty mapping
-- should be used when a basic research pass feels too shallow
-
-### 4. Browser research lane
-- supports research/ops when direct page interaction is required
-- is not the default first step
-
-### 5. Coding lane
+### 3. Coding lane
 - owns file edits, refactors, scripts, tests, repo layout improvements
 
-### 6. Reviewer lane
+### 4. Reviewer lane
 - checks merge readiness, regression risk, overclaiming, and missing edge cases
 - primary skill: `skills/reviewer-lane/`
 
-### 7. Ops lane
+### 5. Ops lane
 - handles restart checks, Discord sends, git notifications, health/status summaries
 
 ## Core task flow
@@ -56,20 +49,11 @@ Every meaningful handoff should say:
 - persona/operating-rule files are protected unless the user explicitly asks to change them
 
 
-## Recommended deep-research flow
 
-For research-heavy tasks, prefer:
 
-1. Research lane
-   - gather shortlist
-   - rank source quality
-   - identify likely strongest paths
+## Recommended research flow
 
-2. Deep research lane
-   - expand strongest sources
-   - cross-check claims
-   - build thesis / anti-thesis
-   - translate implications
-
-3. Reviewer lane
-   - check overclaiming, missing counterevidence, and weak assumptions when needed
+1. Research lane starts in quick scan mode.
+2. If the question needs more depth, the same research lane escalates into deep research mode.
+3. Browser work is used only if direct interaction is required.
+4. Reviewer lane challenges the conclusion when confidence/risk is high.

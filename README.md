@@ -318,16 +318,13 @@ Tavily 운영 원칙:
 - `main`
   - 운영 총괄 / 일반 대화 / 최종 보고
 - `research`
-  - 빠른 웹 리서치 / shortlist / current-awareness
-- `deep-research` (후보)
-  - 심층 조사 / 장문 synthesis / source triangulation
-- `reviewer` (후보)
+  - quick + deep research를 모두 담당하는 통합 research agent
+- `reviewer`
   - 과장 방지 / 반대 근거 / 품질 검토
-
-### deep-research 호출 가이드
-- `심층 리서치`, `깊게`, `반대 근거도`, `리스크까지`, `counter-thesis도` 같은 표현이 나오면 deep-research lane으로 올린다.
-- shortlist만 필요하면 research lane에 머문다.
-- 중요한 결론은 필요 시 reviewer lane까지 붙인다.
+- `backtest` (추천 추가 후보)
+  - 전략 구현 / 실험 / 백테스트 실행
+- `performance-review` (추천 추가 후보)
+  - 성과 해석 / 보고 포맷 / 리스크 점검
 
 ### 기본 운영 원칙
 - research 질의 → **Research lane 우선**
@@ -657,8 +654,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0034-openclaw-cli-version-pinning.md`
 - `docs/refactor/0035-output-and-artifact-path-conventions.md`
 - `docs/refactor/0036-main-memory-indexing-followup.md`
-- `skills/tavily-research-lane/SKILL.md`
-- `skills/deep-research-lane/SKILL.md`
+- `skills/research-lane/SKILL.md`
 - `skills/reviewer-lane/SKILL.md`
 
 ---
