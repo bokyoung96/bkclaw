@@ -202,8 +202,12 @@ Tavily 사용 원칙:
 
 ### 백테스트 packet (Markdown + PDF) 생성
 ```bash
-python3 scripts/generate_backtest_packet.py reports/backtests/<run_dir>
+./bin/generate_backtest_packet reports/backtests/<run_dir>
 ```
+
+원칙:
+- packet 생성은 가능하면 workspace `.venv` Python을 우선 사용한다.
+- system `python3`와 `.venv`의 라이브러리 구성이 다를 수 있으므로, 보고 전에 interpreter를 먼저 확인한다.
 
 ### trusted elevated 정책 검증
 ```bash
