@@ -7,6 +7,16 @@ cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ```
 
+If the synced local repo lives under `~/openclaw` instead:
+
+```bash
+cd ~/openclaw
+./bin/restart_gaejae
+```
+
+Do not use `/home/node/.openclaw/workspace` from a Mac/host shell.
+That path is container-internal.
+
 ## When to use
 
 Use this when:

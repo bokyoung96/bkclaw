@@ -2,42 +2,44 @@
 
 ## Result
 
-Both Tavily and OMX are usable, but there is an important operational distinction between the clean `main`-based worktree and the user's long-lived `gaejae` working tree.
+OMX wrappers are present, and Tavily should be treated as a research-lane capability that must be verified at the **active runtime** layer, not only at the `.env` layer.
 
-## Findings
+## Tavily
 
-### Tavily
-- `TAVILY_API_KEY` exists in workspace `.env`
-- local Tavily skills are present:
-  - `skills/tavily-research-agent/`
-  - `skills/openclaw-tavily-search/`
-- Tavily is ready to be used as a research-lane tool
+### Readiness rule
+Tavily is considered ready only when all three are true:
+1. `TAVILY_API_KEY` exists in workspace `.env`
+2. the active runtime env exposes that key after restart
+3. a small smoke search succeeds
 
-### OMX
+### Operational note
+- Do not claim `Tavily is missing` only because a project-local script or PATH binary is absent.
+- First separate:
+  - workspace config (`.env`)
+  - active runtime env
+  - project-local scripts or wrappers
+- Tavily belongs to the **research agent / research lane** first.
+
+## OMX
+
+### Current baseline
 - active OMX checkout exists at:
   - `/home/node/.openclaw/workspace/external/oh-my-codex`
-- local OMX state directory exists under `.omx/`
-- `./bin/omx --help` works from the clean `main`-based worktree
-- OMX surface confirms useful commands exist:
-  - `omx doctor`
-  - `omx explore`
-  - `omx team`
-  - `omx ralph`
-  - `omx autoresearch`
-  - `omx sparkshell`
+- local wrappers exist under `bin/`
+- OMX readiness should still be validated from a clean, operator-facing path when practical
 
-## Important operational caveat
+## Important caveat
 
-The long-lived workspace branch `gaejae` is heavily ahead/dirty relative to `main` and does not reflect the newly-merged `bin/omx` baseline yet.
+The repo must not mix up these layers when reporting:
+1. OpenClaw runtime readiness
+2. workspace helper/wrapper readiness
+3. project-level execution readiness
 
-That means:
-- readiness checks should prefer a clean `main`-based worktree
-- repo-level operational docs and wrappers should be validated against `main`
-- if `gaejae` is intended to remain a daily driver, it should eventually be rebased/synced or retired in favor of the current baseline
+This distinction matters because past confusion came from treating a project-context limitation as if the whole runtime lacked Tavily/Python support.
 
 ## Recommended next step
 
-1. use Tavily in a small research-lane test
-2. run a lightweight OMX test from a clean worktree
-3. test Ralph mode in a tightly scoped task
-4. only then design the broader team-orchestration layer
+1. restart the runtime after Tavily key changes
+2. verify active runtime env sees the new key
+3. run one research-lane smoke search
+4. only then label Tavily as ready in reports

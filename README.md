@@ -26,15 +26,26 @@ Python 기반 퀀트 리서치 워크스페이스이자, 가재(OpenClaw 기반 
 이 workspace는 **Python 리서치 런타임**과 **Node 기반 Codex/OMX 런타임**이 분리되어 있다.
 
 ### A. Python / backtest lane
-- 위치: `~/.openclaw/workspace/.venv`
+- 시스템 인터프리터:
+  - `python3` (운영 런타임 내부 기본 제공)
+- workspace 실행환경:
+  - `~/.openclaw/workspace/.venv`
 - 용도:
   - 백테스트
   - 데이터 검증
   - 리서치/리포팅 Python 실행
+  - Quant DB / 데이터 파이프라인 Python 실행
 - 대표 진입점:
   - `scripts/run_backtest.py`
   - `scripts/run_experiment.py`
   - `scripts/validate_data.py`
+
+중요:
+- 운영 보고에서 `python이 없다`고 단정하지 않는다.
+- 먼저 아래 층위를 분리해서 본다:
+  1. 운영 런타임에 `python3`가 있는가
+  2. workspace `.venv`가 있는가
+  3. 특정 프로젝트 전용 env/Dockerfile이 별도로 필요한가
 
 ### B. Codex CLI lane
 - 전역 설치 위치:
@@ -165,6 +176,16 @@ export CODEX_HOME="$HOME/.local/share/codex"
 ./bin/check_gaejae_db
 ```
 
+### 운영 런타임 / workspace 층위 점검
+```bash
+./bin/check_runtime_layers
+```
+
+### Tavily research lane 점검
+```bash
+./scripts/check_tavily_research_lane.sh
+```
+
 ### 가재/OpenClaw 재시작 + 검증 + 요약 리포트
 ```bash
 ./bin/restart_gaejae
@@ -201,6 +222,7 @@ python3 scripts/check_trusted_elevated_policy.py
   - source tier 정리
 - 기본 도구:
   - OpenClaw research agent
+  - Tavily research (workspace `.env`의 `TAVILY_API_KEY` 기준)
   - web search / fetch
   - memory / session lookup
 - 기본 출력:
@@ -209,6 +231,11 @@ python3 scripts/check_trusted_elevated_policy.py
   - source tier
   - 리스크/불확실성
   - 다음 액션
+
+Tavily 운영 원칙:
+- Tavily는 **research agent 전용 research lane**으로 본다.
+- `TAVILY_API_KEY`가 `.env`에 있어도, active runtime 반영 여부와 실제 search smoke test는 별도로 확인한다.
+- `키 존재`와 `실제 검색 성공`을 같은 것으로 취급하지 않는다.
 
 ### Lane B. Python backtest lane
 - 목적:
@@ -262,24 +289,32 @@ python3 scripts/check_trusted_elevated_policy.py
 
 가재/OpenClaw 운영에서 가장 중요한 재시작 경로는 아래 순서다.
 
-### A. 빠른 재시작 (workspace 기준)
+### A. 빠른 재시작 (host/local workspace 기준)
 ```bash
 cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ```
+
+또는 repo가 `~/openclaw`에 있다면:
+```bash
+cd ~/openclaw
+./bin/restart_gaejae
+```
+
+중요:
+- `/home/node/.openclaw/workspace` 는 **컨테이너 내부 경로**다.
+- Mac/host 터미널에서는 이 경로를 직접 쓰지 않는다.
+- host에서는 보통 `~/.openclaw/workspace` 또는 `~/openclaw`에서 실행한다.
 
 기본적으로 아래 경로들도 자동 탐색한다:
 - `~/openclaw/docker-compose.yml`
 - repo root 인근 compose 파일
 
 이 명령은:
-- 이미지 태깅
-- docker compose down/up
+- 기본 이미지 `gaejae-openclaw:latest`를 기준으로 태깅
+- `OPENCLAW_IMAGE`를 compose에 주입하여 docker compose down/up 수행
 - 컨테이너 health 확인
-- `openclaw status` 확인
-- Quant DB 확인
-- drift/baseline 비교
-- dev 채널 요약 전송
+- 컨테이너 내부 Ollama 기동/모델 준비 확인
 까지 한 번에 수행한다.
 
 ### B. OpenClaw gateway 상태 확인
@@ -348,6 +383,20 @@ cd ~/.openclaw/workspace
   - `/usr/local/ollama`
 - 다만 `127.0.0.1:11434` 서버는 런타임에서 실제로 띄워져야 하므로, 필요 시 `./scripts/start_local_ollama.sh`를 한 번 실행한다.
 
+### 운영 런타임 상태 판정 규칙
+`없다 / 안 된다`는 표현은 아래 확인 전에 쓰지 않는다.
+
+1. 바이너리 존재 여부
+2. PATH 노출 여부
+3. 환경변수/토큰 주입 여부
+4. 호스트 ↔ 컨테이너 경로 차이
+5. 사용자가 이미 제공한 운영 맥락/Dockerfile/이미지 전제
+
+특히 아래 3층을 분리해서 보고한다:
+- **운영 런타임**: 현재 OpenClaw 컨테이너 전체 상태
+- **workspace 실행환경**: `.venv`, shared scripts, env
+- **프로젝트 실행환경**: 특정 repo의 local env / Dockerfile / 개별 검증 상태
+
 ---
 
 ## 10. Git / GitHub 운영 원칙
@@ -406,6 +455,17 @@ cd ~/.openclaw/workspace
 
 ## 11. Discord 운영 원칙
 
+### 현재 채널 답장 vs 다른 채널 전송
+- 현재 채널에서의 일반 답장은 OpenClaw의 기본 라우팅을 따른다.
+- 다른 채널 전송은 아래 둘을 분리한다:
+  1. `sessions_send` → **세션 주입 / 라우팅 확인용**
+  2. `openclaw message send --channel discord --target ...` → **실제 Discord direct send**
+
+완료 판정 규칙:
+- `sessions_send`의 내부 ack만으로는 실제 Discord 전송 완료로 보지 않는다.
+- 가능하면 `messageId` 또는 **실제 Discord 가시 메시지**를 완료 근거로 사용한다.
+- git 채널과 새/불안정 채널은 **direct send 우선**이다.
+
 ### 실제 업로드 vs 내부 확인
 - `read(image)` → 내부 확인용
 - 실제 Discord에서 보이게 하려면 → `openclaw message send --media`
@@ -430,7 +490,12 @@ cd ~/.openclaw/workspace
 - `research-lab` → `channel:1481841620868530337`
 - `paper-flow` → `channel:1481841598185738402`
 - `news-flow` → `channel:1481841550299365549`
+- `crypto` → `channel:1484724388065706054`
 - `git notify` → `channel:1483989656470294548`
+
+채널 운용 메모:
+- `git notify`는 `sessions_send` 대신 direct Discord send를 우선 사용한다.
+- `crypto` 채널은 현재 사용 가능 대상으로 보되, 완료 판정은 **실제 visible message 확인** 기준을 우선한다.
 
 ---
 
@@ -470,6 +535,9 @@ cd ~/.openclaw/workspace
 - delivery / notification 계층 추가 통합
 - validation policy 세분화
 - outputs / reports 경로 일원화
+- Tavily active-runtime 반영 + smoke test 자동화
+- 운영 런타임 / workspace env / 프로젝트 env 상태 판정 분리
+- 채널별 direct-send / sessions_send 정책 표준화
 - Tavily research lane와 OMX orchestration lane의 실제 운용 결합 정교화
 - Ralph / team lane를 실제 리팩토링 작업 플로우에 더 자연스럽게 연결
 
@@ -521,6 +589,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0030-restart-runtime-resolution.md`
 - `docs/refactor/0031-trusted-elevated-policy.md`
 - `docs/refactor/0032-gaejae-omx-ralph-launch.md`
+- `docs/refactor/0033-runtime-verification-and-channel-delivery.md`
 
 ---
 

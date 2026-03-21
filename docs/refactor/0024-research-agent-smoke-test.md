@@ -2,38 +2,41 @@
 
 ## Goal
 
-Verify that the current Tavily-backed research lane is operational before deeper OMX / Ralph experiments.
+Verify that the research lane is operational without mixing up:
+- runtime env readiness
+- workspace helper availability
+- project-local tooling
 
-## Smoke test
+## Tavily smoke-test rule
 
-Command used:
+A Tavily-backed research lane should be checked in this order:
+1. `TAVILY_API_KEY` exists in workspace `.env`
+2. active runtime env reflects the same key after restart
+3. one small search succeeds
 
-```bash
-cd /home/node/.openclaw/workspace
-python3 skills/openclaw-tavily-search/scripts/tavily_search.py \
-  --query "site:github.com Yeachan Heo oh my codex ralph mode" \
-  --max-results 3 \
-  --include-answer \
-  --format brave
-```
+## Reporting rule
 
-## Result
+When a smoke test has not yet been run, report:
+- `key configured`
+- `runtime env pending verification`
+- `search execution pending`
 
-Success.
+Do **not** compress that into `Tavily 없음` or `Tavily 안 됨`.
 
-Observed:
-- Tavily returned relevant results for `oh-my-codex`
-- results included repository-level context for Ralph mode behavior
-- answer mode also returned a compact summary
+## Runtime verification posture
+
+Before declaring Python / pip / venv / Docker missing, verify in this order:
+1. binary exists
+2. PATH exposure
+3. env injection
+4. host vs container path differences
+5. whether the limitation is only project-local
 
 ## Interpretation
 
-This is enough to treat Tavily as ready for:
-- current web/source shortlisting
-- quick repo/project reconnaissance
-- lightweight research-lane scouting before deeper execution work
+The research agent should prefer precise status language such as:
+- `active runtime에서 아직 확인되지 않았다`
+- `project-local Docker validation is pending`
+- `workspace .venv exists, but this project path has not been validated yet`
 
-## Next recommended step
-
-- Run one focused Tavily research task tied to OMX usage or Ralph behavior
-- Then run a small OMX command-path experiment from a clean main-based worktree
+This avoids conflating a local project limitation with a whole-runtime absence.
