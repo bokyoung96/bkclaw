@@ -68,6 +68,7 @@ Things like:
   - `WAITING_ON_USER`
   - `DONE`
 - For meaningful long tasks, prefer leaving a progress artifact under `logs/progress/` via `./bin/progress_note`.
+- If the user wants proactive mid-task updates without re-prompting, prefer `./bin/long_task_watch` with a real channel target.
 - Mid-task updates should mention:
   - current phase
   - what finished

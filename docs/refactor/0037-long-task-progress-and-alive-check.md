@@ -50,3 +50,20 @@ For long tasks, progress should separate:
 ## Why
 
 This does not create a tqdm bar, but it gives an operator-visible heartbeat for long tasks and reduces ambiguity between slow progress and silent failure.
+
+
+## Active reporting helper
+
+For tasks where the operator wants proactive status updates in chat, use:
+
+```bash
+TARGET=channel:<id> TASK_NAME=my_task STEP="research" INTERVAL_SECONDS=600 ./bin/long_task_watch <command ...>
+```
+
+Behavior:
+- sends a start message
+- sends periodic in-progress messages while the command is alive
+- sends DONE or BLOCKED on exit
+- also writes `logs/progress/<task>.latest.md` and `.jsonl`
+
+Use this for genuinely long-running work where silence would otherwise look like a stall or crash.

@@ -214,9 +214,15 @@ Tavily 사용 원칙:
 TASK_NAME=my_task STATUS=IN_PROGRESS STEP="research" ./bin/progress_note "현재 research 단계 진행 중"
 ```
 
+### 장기 작업 자동 중간보고
+```bash
+TARGET=channel:<id> TASK_NAME=my_task STEP="research" INTERVAL_SECONDS=600 ./bin/long_task_watch <command ...>
+```
+
 원칙:
 - 10분 이상 걸릴 가능성이 있는 작업은 시작/중간/완료 상태를 분리해서 기록한다.
 - 가능하면 `logs/progress/<task>.latest.md` 와 `.jsonl`에 남긴다.
+- 사용자가 다시 묻지 않아도 진행 상태를 알려야 하는 장기 작업은 `./bin/long_task_watch`를 우선 검토한다.
 
 ### trusted elevated 정책 검증
 ```bash
