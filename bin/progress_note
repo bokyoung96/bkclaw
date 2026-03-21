@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+OUT_DIR="$ROOT_DIR/logs/progress"
+mkdir -p "$OUT_DIR"
+
+TASK_NAME="${TASK_NAME:-generic-task}"
+STATUS="${STATUS:-IN_PROGRESS}"
+STEP="${STEP:-}"
+DETAIL="${DETAIL:-}"
+BLOCKER="${BLOCKER:-}"
+
+if [ $# -gt 0 ]; then
+  DETAIL="$*"
+fi
+
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+OUT_FILE="$OUT_DIR/${TASK_NAME}.latest.md"
+JSONL_FILE="$OUT_DIR/${TASK_NAME}.jsonl"
+
+cat > "$OUT_FILE" <<EOT
+# Progress Note
+
+- task: $TASK_NAME
+- status: $STATUS
+- step: $STEP
+- blocker: ${BLOCKER:-none}
+- updated_at_utc: $STAMP
+
+## detail
+${DETAIL:-no detail provided}
+EOT
+
+python3 - <<PY >> "$JSONL_FILE"
+import json
+print(json.dumps({
+  "task": ${TASK_NAME@Q},
+  "status": ${STATUS@Q},
+  "step": ${STEP@Q},
+  "blocker": ${BLOCKER@Q},
+  "detail": ${DETAIL@Q},
+  "updated_at_utc": ${STAMP@Q}
+}, ensure_ascii=False))
+PY
+
+echo "$OUT_FILE"

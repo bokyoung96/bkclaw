@@ -209,6 +209,15 @@ Tavily 사용 원칙:
 - packet 생성은 가능하면 workspace `.venv` Python을 우선 사용한다.
 - system `python3`와 `.venv`의 라이브러리 구성이 다를 수 있으므로, 보고 전에 interpreter를 먼저 확인한다.
 
+### 장기 작업 progress note 기록
+```bash
+TASK_NAME=my_task STATUS=IN_PROGRESS STEP="research" ./bin/progress_note "현재 research 단계 진행 중"
+```
+
+원칙:
+- 10분 이상 걸릴 가능성이 있는 작업은 시작/중간/완료 상태를 분리해서 기록한다.
+- 가능하면 `logs/progress/<task>.latest.md` 와 `.jsonl`에 남긴다.
+
 ### trusted elevated 정책 검증
 ```bash
 python3 scripts/check_trusted_elevated_policy.py
@@ -665,6 +674,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0034-openclaw-cli-version-pinning.md`
 - `docs/refactor/0035-output-and-artifact-path-conventions.md`
 - `docs/refactor/0036-main-memory-indexing-followup.md`
+- `docs/refactor/0037-long-task-progress-and-alive-check.md`
 - `skills/research-lane/SKILL.md`
 - `skills/reviewer-lane/SKILL.md`
 
