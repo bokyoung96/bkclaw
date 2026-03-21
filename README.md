@@ -289,6 +289,11 @@ Tavily 운영 원칙:
 - persistent completion 필요 → **Ralph lane**
 - 짧은 codex smoke/test → **Direct Codex lane**
 
+### handoff 규칙
+- **Research → OMX**: source shortlisting과 thesis가 끝나고, 실제 구현/파일 작업이 시작될 때 넘긴다.
+- **OMX → Ralph**: persistent execution, retry loop, verify 포함 완료가 필요할 때 넘긴다.
+- **Direct Codex**는 좁은 smoke/짧은 수정에 한정하고, multi-step 작업은 OMX 이상으로 올린다.
+
 ---
 
 ## 8. 형이 나를 재시작할 때 보는 명령어
@@ -604,6 +609,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0033-runtime-verification-and-channel-delivery.md`
 - `docs/refactor/0034-openclaw-cli-version-pinning.md`
 - `docs/refactor/0035-output-and-artifact-path-conventions.md`
+- `docs/refactor/0036-main-memory-indexing-followup.md`
 - `skills/tavily-research-lane/SKILL.md`
 
 ---
