@@ -24,6 +24,8 @@ RUN set -eux; \
     esac; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates curl tar cloudflared; \
+    rm -f /usr/local/bin/openclaw; \
+    rm -rf /usr/local/lib/node_modules/openclaw; \
     npm install -g "openclaw@${OPENCLAW_VERSION}" "@openai/codex@${CODEX_CLI_VERSION}"; \
     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_CLI_VERSION}/gh_${GH_CLI_VERSION}_linux_${gh_arch}.tar.gz" -o /tmp/gh.tgz; \
     tar -xzf /tmp/gh.tgz -C /tmp; \
