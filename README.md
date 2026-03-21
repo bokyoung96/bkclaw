@@ -263,6 +263,18 @@ Tavily 운영 원칙:
   - weakest assumption
   - what would change the conclusion
 
+
+### Lane A-3. Reviewer lane
+- 목적:
+  - 과장 방지
+  - 약한 가정 점검
+  - 반대 근거/검증 누락 확인
+- 기본 skill:
+  - `skills/reviewer-lane/`
+- 사용할 때:
+  - deep research 결과를 바로 채택하기 전에 한 번 더 점검할 때
+  - 형이 `리스크도`, `반대 근거도`, `검토해봐` 같은 요청을 할 때
+
 ### Lane B. Python backtest lane
 - 목적:
   - 전략 구현
@@ -311,6 +323,11 @@ Tavily 운영 원칙:
   - 심층 조사 / 장문 synthesis / source triangulation
 - `reviewer` (후보)
   - 과장 방지 / 반대 근거 / 품질 검토
+
+### deep-research 호출 가이드
+- `심층 리서치`, `깊게`, `반대 근거도`, `리스크까지`, `counter-thesis도` 같은 표현이 나오면 deep-research lane으로 올린다.
+- shortlist만 필요하면 research lane에 머문다.
+- 중요한 결론은 필요 시 reviewer lane까지 붙인다.
 
 ### 기본 운영 원칙
 - research 질의 → **Research lane 우선**
@@ -642,6 +659,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0036-main-memory-indexing-followup.md`
 - `skills/tavily-research-lane/SKILL.md`
 - `skills/deep-research-lane/SKILL.md`
+- `skills/reviewer-lane/SKILL.md`
 
 ---
 
