@@ -334,6 +334,11 @@ cd ~/.openclaw/workspace
 ./bin/restart_gaejae
 ```
 
+이 경로는 다음이 바뀌었을 때 특히 필요하다:
+- OpenClaw CLI 버전
+- Ollama / cloudflared 같은 이미지 레벨 바이너리
+- entrypoint / PATH / bootstrap 로직
+
 ### E. 새 이미지/환경이 안정화된 뒤 baseline 갱신
 ```bash
 cd ~/.openclaw/workspace
@@ -348,6 +353,7 @@ cd ~/.openclaw/workspace
 - `Dockerfile.gaejae`
   - 시스템 레벨 의존성
   - cloudflared, ollama 같은 OS 레벨 바이너리
+  - OpenClaw CLI 버전 고정 설치
   - runtime PATH 기본값
 - `.env`
   - credential / channel target / runtime knobs
@@ -590,6 +596,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0031-trusted-elevated-policy.md`
 - `docs/refactor/0032-gaejae-omx-ralph-launch.md`
 - `docs/refactor/0033-runtime-verification-and-channel-delivery.md`
+- `docs/refactor/0034-openclaw-cli-version-pinning.md`
 
 ---
 
