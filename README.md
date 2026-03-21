@@ -603,6 +603,7 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0032-gaejae-omx-ralph-launch.md`
 - `docs/refactor/0033-runtime-verification-and-channel-delivery.md`
 - `docs/refactor/0034-openclaw-cli-version-pinning.md`
+- `docs/refactor/0035-output-and-artifact-path-conventions.md`
 - `skills/tavily-research-lane/SKILL.md`
 
 ---
