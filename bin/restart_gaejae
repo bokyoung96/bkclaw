@@ -1,5 +1,135 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# shellcheck source=../scripts/lib/entrypoint.sh
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/lib/entrypoint.sh"
-run_repo_script "${BASH_SOURCE[0]}" "scripts/restart_and_verify_openclaw.sh"
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../scripts/lib/load_env.sh
+. "$ROOT_DIR/scripts/lib/load_env.sh"
+load_workspace_env
+
+IMAGE_SOURCE_TAG="${IMAGE_SOURCE_TAG:-gaejae-openclaw:latest}"
+COMPOSE_TARGET_TAG="${COMPOSE_TARGET_TAG:-openclaw:local}"
+CONTAINER_NAME="${CONTAINER_NAME:-openclaw-openclaw-gateway-1}"
+COMPOSE_BIN="${COMPOSE_BIN:-docker compose}"
+COMPOSE_FILE="${COMPOSE_FILE:-}"
+COMPOSE_DIR="${COMPOSE_DIR:-}"
+OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
+OLLAMA_MODEL="${OLLAMA_EMBED_MODEL:-nomic-embed-text}"
+HEALTH_WAIT_SECONDS="${HEALTH_WAIT_SECONDS:-120}"
+HEALTH_POLL_INTERVAL="${HEALTH_POLL_INTERVAL:-2}"
+
+resolve_compose_file() {
+  if [ -n "$COMPOSE_FILE" ] && [ -f "$COMPOSE_FILE" ]; then
+    return 0
+  fi
+
+  local candidates=(
+    "$ROOT_DIR/compose.yml"
+    "$ROOT_DIR/compose.yaml"
+    "$ROOT_DIR/docker-compose.yml"
+    "$ROOT_DIR/docker-compose.yaml"
+    "$HOME/openclaw/compose.yml"
+    "$HOME/openclaw/compose.yaml"
+    "$HOME/openclaw/docker-compose.yml"
+    "$HOME/openclaw/docker-compose.yaml"
+    "/home/node/.openclaw/compose.yml"
+    "/home/node/.openclaw/compose.yaml"
+    "/home/node/.openclaw/docker-compose.yml"
+    "/home/node/.openclaw/docker-compose.yaml"
+    "/app/compose.yml"
+    "/app/compose.yaml"
+    "/app/docker-compose.yml"
+    "/app/docker-compose.yaml"
+  )
+
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [ -f "$candidate" ]; then
+      COMPOSE_FILE="$candidate"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+wait_for_container_health() {
+  local elapsed=0
+  while true; do
+    local status
+    status="$(docker inspect "$CONTAINER_NAME" --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}')"
+    if [ "$status" = "healthy" ] || [ "$status" = "no-healthcheck" ]; then
+      echo "[ok] container health: $status"
+      return 0
+    fi
+    if [ "$status" = "unhealthy" ]; then
+      echo "[error] container health is unhealthy" >&2
+      return 1
+    fi
+    if [ "$elapsed" -ge "$HEALTH_WAIT_SECONDS" ]; then
+      echo "[error] container health remained $status after ${HEALTH_WAIT_SECONDS}s" >&2
+      return 1
+    fi
+    sleep "$HEALTH_POLL_INTERVAL"
+    elapsed=$((elapsed + HEALTH_POLL_INTERVAL))
+  done
+}
+
+ensure_ollama_inside_container() {
+  echo "[step] ensuring ollama inside $CONTAINER_NAME"
+  docker exec -i "$CONTAINER_NAME" bash -lc '
+set -euo pipefail
+HOST="'"$OLLAMA_HOST"'"
+MODEL="'"$OLLAMA_MODEL"'"
+
+if ! command -v ollama >/dev/null 2>&1; then
+  echo "[error] ollama binary not found in container" >&2
+  exit 1
+fi
+
+if curl -fsS "http://$HOST/api/tags" >/dev/null 2>&1; then
+  echo "[ok] ollama already serving on $HOST"
+else
+  mkdir -p "$HOME/.openclaw/logs" "$HOME/.openclaw/ollama/models"
+  export OLLAMA_MODELS="$HOME/.openclaw/ollama/models"
+  nohup env OLLAMA_HOST="$HOST" ollama serve >"$HOME/.openclaw/logs/ollama.log" 2>&1 &
+  for _ in $(seq 1 60); do
+    if curl -fsS "http://$HOST/api/tags" >/dev/null 2>&1; then
+      break
+    fi
+    sleep 1
+  done
+fi
+
+curl -fsS "http://$HOST/api/tags" >/dev/null
+ollama pull "$MODEL"
+echo "[ok] ollama ready: $MODEL"
+'
+}
+
+if ! resolve_compose_file; then
+  echo "[error] compose file not found" >&2
+  echo "[next] set COMPOSE_FILE explicitly or place docker-compose.yml under a known location" >&2
+  exit 1
+fi
+
+COMPOSE_DIR="$(cd "$(dirname "$COMPOSE_FILE")" && pwd)"
+COMPOSE_CMD="$COMPOSE_BIN -f $COMPOSE_FILE"
+
+echo "[step] tag image: $IMAGE_SOURCE_TAG -> $COMPOSE_TARGET_TAG"
+docker tag "$IMAGE_SOURCE_TAG" "$COMPOSE_TARGET_TAG"
+
+export OPENCLAW_IMAGE="$IMAGE_SOURCE_TAG"
+
+echo "[step] docker compose down"
+(cd "$COMPOSE_DIR" && OPENCLAW_IMAGE="$OPENCLAW_IMAGE" $COMPOSE_CMD down)
+
+echo "[step] docker compose up -d"
+(cd "$COMPOSE_DIR" && OPENCLAW_IMAGE="$OPENCLAW_IMAGE" $COMPOSE_CMD up -d)
+
+echo "[step] wait for container: $CONTAINER_NAME"
+wait_for_container_health
+
+ensure_ollama_inside_container
+
+echo "[done] docker + openclaw + ollama restart completed"
+echo "[hint] verify with: openclaw status"

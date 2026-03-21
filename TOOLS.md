@@ -31,6 +31,47 @@ Things like:
 - Default speaker: Kitchen HomePod
 ```
 
+## Runtime Verification Rules
+
+- After Docker restart, `/new`, or runtime reset, do not jump straight to `없다`, `안 된다`, or `미설치`.
+- Verify in this order before concluding failure:
+  1. binary exists
+  2. PATH exposure
+  3. env/token injection
+  4. host vs container path differences
+  5. user-provided runtime/Dockerfile assumptions already in place
+- Separate these layers explicitly when reporting:
+  - 운영 런타임 (current OpenClaw container/runtime)
+  - workspace 실행환경 (`.venv`, shared scripts, shared env)
+  - 프로젝트 실행환경 (project-local Dockerfile/env/tests)
+- If something is not yet proven, say `현재 내가 잡은 경로/세션에서는 아직 확인되지 않았다` rather than `없다`.
+
+## Tavily Research Lane Rules
+
+- Treat Tavily as a **research-agent lane** capability first, not a coding-lane default.
+- `TAVILY_API_KEY` existing in `.env` is not enough to declare readiness.
+- Tavily readiness requires all three when relevant:
+  1. key exists in `.env`
+  2. key is visible in active runtime env after restart
+  3. a small smoke search succeeds
+- Report Tavily failures by layer:
+  - key/config issue
+  - active runtime env issue
+  - provider/search execution issue
+
+## Channel Delivery Rules
+
+- Distinguish clearly between:
+  1. current-channel auto reply
+  2. `sessions_send` for cross-session routing
+  3. `openclaw message send` for direct provider delivery
+- `sessions_send` ack alone does **not** prove Discord-visible delivery.
+- For git channel and new/unstable channels, prefer **direct Discord send** when completion proof matters.
+- Treat `messageId` or actual visible delivery as the primary completion proof for direct sends.
+- Current notable channels:
+  - `channel:1483989656470294548` → git notify, direct send preferred
+  - `channel:1484724388065706054` → crypto, treat as usable but prefer visible-delivery confirmation for completion
+
 ## Backtest / Performance Reporting Rules
 
 - For strategy research and backtest results delivered to Discord, use a **standard performance summary format** instead of ad-hoc prose.

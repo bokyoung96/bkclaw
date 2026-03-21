@@ -29,3 +29,11 @@ If needed, a specific compose file can be forced:
 ```bash
 COMPOSE_FILE=/absolute/path/to/compose.yml ./bin/restart_gaejae
 ```
+
+## Host vs container path reminder
+
+- `/home/node/.openclaw/workspace` is the container-internal workspace path.
+- On a local Mac/host shell, operators should use host paths such as:
+  - `~/.openclaw/workspace`
+  - `~/openclaw`
+- The restart command should therefore be documented and run with host paths, not the container path.
