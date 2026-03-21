@@ -13,6 +13,7 @@ ARG CLOUDFLARED_VERSION=2026.2.1
 ARG CODEX_CLI_VERSION=0.115.0
 ARG GH_CLI_VERSION=2.88.1
 ARG OLLAMA_VERSION=0.7.0
+ARG OPENCLAW_VERSION=2026.3.13
 
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
@@ -23,7 +24,7 @@ RUN set -eux; \
     esac; \
     apt-get update; \
     apt-get install -y --no-install-recommends ca-certificates curl tar cloudflared; \
-    npm install -g "@openai/codex@${CODEX_CLI_VERSION}"; \
+    npm install -g "openclaw@${OPENCLAW_VERSION}" "@openai/codex@${CODEX_CLI_VERSION}"; \
     curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_CLI_VERSION}/gh_${GH_CLI_VERSION}_linux_${gh_arch}.tar.gz" -o /tmp/gh.tgz; \
     tar -xzf /tmp/gh.tgz -C /tmp; \
     install -m 0755 "/tmp/gh_${GH_CLI_VERSION}_linux_${gh_arch}/bin/gh" /usr/local/bin/gh; \
@@ -35,6 +36,7 @@ RUN set -eux; \
     elif [ -x /usr/local/bin/ollama ]; then true; \
     else find /usr/local -maxdepth 3 -name ollama -type f >&2; exit 1; fi; \
     cloudflared --version; \
+    openclaw --version; \
     codex --version; \
     gh --version | head -n 1; \
     /usr/local/bin/ollama --version; \
