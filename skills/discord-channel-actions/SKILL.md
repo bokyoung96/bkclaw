@@ -9,19 +9,25 @@ Use this skill when Discord delivery details matter.
 
 ## Core rules
 
-1. Distinguish **internal inspection** from **real delivery**.
+1. Distinguish **current-channel reply**, **cross-session routing**, and **real provider delivery**.
+   - current-channel reply = normal reply in the current session
+   - `sessions_send` = routing/injection into another session
+   - `openclaw message send` = real Discord provider delivery
+
+2. Distinguish **internal inspection** from **real delivery**.
    - `read(image)` is internal inspection only.
    - If the user wants the image/file visible in Discord, use actual message/media sending.
 
-2. Prefer real OpenClaw delivery paths.
+3. Prefer real OpenClaw delivery paths when completion proof matters.
    - Use `openclaw message send` for real sends.
    - For media, use `--media` and confirm success before saying it was sent.
+   - Treat `messageId` or actual visible delivery as the strongest completion proof.
 
-3. Respect local media path policy.
+4. Respect local media path policy.
    - Files under `workspace-*` may be rejected for upload.
    - Preferred local staging path: `~/.openclaw/media/`
 
-4. Reuse real Discord identifiers.
+5. Reuse real Discord identifiers.
    - Replies should use the current message id when appropriate.
    - Channel sends should use `channel:<id>` targets.
 
@@ -49,6 +55,15 @@ Keep notice titles short, bold, and operational.
 
 If the user explicitly asks for a notice rewrite (for example "공지로 정리해줘"), do **not** answer in regular assistant prose first. Return the notice draft directly.
 See also: `skills/notice-channel-formatting/`.
+
+## Delivery completion rules
+
+- Do not treat `sessions_send` ack alone as proof of Discord-visible delivery.
+- For git channel and new/unstable channels, prefer direct Discord send when completion proof matters.
+- Split reporting into:
+  - config changed
+  - session routed
+  - provider-visible delivery confirmed/unconfirmed
 
 ## Git channel formatting
 

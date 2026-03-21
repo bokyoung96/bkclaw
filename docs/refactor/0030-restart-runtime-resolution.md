@@ -37,3 +37,14 @@ COMPOSE_FILE=/absolute/path/to/compose.yml ./bin/restart_gaejae
   - `~/.openclaw/workspace`
   - `~/openclaw`
 - The restart command should therefore be documented and run with host paths, not the container path.
+
+
+## Apply-step rule
+
+After a fix, explicitly classify the required apply path:
+
+- config file changed -> reload/restart runtime
+- Dockerfile/image changed -> rebuild image, then restart
+- workspace helper/script changed -> rerun helper; restart only if runtime boot path depends on it
+
+This prevents false assumptions such as expecting a config-only restart to apply an image-level OpenClaw CLI upgrade.

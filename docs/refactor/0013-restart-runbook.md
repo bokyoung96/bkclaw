@@ -66,3 +66,22 @@ cd ~/.openclaw/workspace
 - restart report written under `logs/openclaw_restart_reports/`
 - runtime state artifacts written under `logs/openclaw_runtime_state/`
 - dev summary sent to the configured dev Discord channel when enabled
+
+
+## Runtime-change classification
+
+Treat restart work in three buckets:
+
+1. **Config-only change**
+   - examples: allowlists, sandbox mode, trusted proxies
+   - requires runtime reload / gateway restart semantics
+
+2. **Image-level change**
+   - examples: OpenClaw CLI version, ollama binary, cloudflared, entrypoint PATH
+   - requires image rebuild + container restart
+
+3. **Workspace-only change**
+   - examples: scripts, skills, docs, reports, helper checks
+   - may require no restart unless entrypoint/runtime wiring depends on it
+
+Operator rule: do not collapse these into one vague restart story. State which layer changed and what apply step is required.

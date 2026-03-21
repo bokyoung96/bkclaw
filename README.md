@@ -186,6 +186,10 @@ export CODEX_HOME="$HOME/.local/share/codex"
 ./scripts/check_tavily_research_lane.sh
 ```
 
+Tavily 사용 원칙:
+- Tavily가 research lane의 기본 current-web 탐색기다.
+- browser automation은 Tavily/web_search로 충분하지 않을 때만 follow-up으로 쓴다.
+
 ### 가재/OpenClaw 재시작 + 검증 + 요약 리포트
 ```bash
 ./bin/restart_gaejae
@@ -223,6 +227,8 @@ python3 scripts/check_trusted_elevated_policy.py
 - 기본 도구:
   - OpenClaw research agent
   - Tavily research (workspace `.env`의 `TAVILY_API_KEY` 기준)
+  - primary skill: `skills/tavily-research-lane/`
+  - browser follow-up: `skills/browser-research-lane/`
   - web search / fetch
   - memory / session lookup
 - 기본 출력:
@@ -597,6 +603,8 @@ cd ~/.openclaw/workspace
 - `docs/refactor/0032-gaejae-omx-ralph-launch.md`
 - `docs/refactor/0033-runtime-verification-and-channel-delivery.md`
 - `docs/refactor/0034-openclaw-cli-version-pinning.md`
+- `docs/refactor/0035-output-and-artifact-path-conventions.md`
+- `skills/tavily-research-lane/SKILL.md`
 
 ---
 
