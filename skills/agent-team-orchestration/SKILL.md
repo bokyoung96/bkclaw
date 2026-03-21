@@ -15,19 +15,23 @@ Use this skill when one agent should not do everything.
 
 ### 2. Research lane
 - owns Tavily, web search, paper scouting, source shortlist, currentness checks
-- escalates to browser research only when search snippets are not enough
+- is optimized for fast scan / shortlist / freshness
 
-### 3. Browser research lane
+### 3. Deep research lane
+- owns multi-source triangulation, long-form synthesis, thesis vs anti-thesis, and uncertainty mapping
+- should be used when a basic research pass feels too shallow
+
+### 4. Browser research lane
 - supports research/ops when direct page interaction is required
 - is not the default first step
 
-### 4. Coding lane
+### 5. Coding lane
 - owns file edits, refactors, scripts, tests, repo layout improvements
 
-### 5. Reviewer lane
-- checks merge readiness, regression risk, and missing edge cases
+### 6. Reviewer lane
+- checks merge readiness, regression risk, overclaiming, and missing edge cases
 
-### 6. Ops lane
+### 7. Ops lane
 - handles restart checks, Discord sends, git notifications, health/status summaries
 
 ## Core task flow
@@ -49,3 +53,22 @@ Every meaningful handoff should say:
 - important git milestones notify the git channel
 - root-level clutter should be reduced aggressively
 - persona/operating-rule files are protected unless the user explicitly asks to change them
+
+
+## Recommended deep-research flow
+
+For research-heavy tasks, prefer:
+
+1. Research lane
+   - gather shortlist
+   - rank source quality
+   - identify likely strongest paths
+
+2. Deep research lane
+   - expand strongest sources
+   - cross-check claims
+   - build thesis / anti-thesis
+   - translate implications
+
+3. Reviewer lane
+   - check overclaiming, missing counterevidence, and weak assumptions when needed
