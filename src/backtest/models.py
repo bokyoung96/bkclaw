@@ -27,6 +27,9 @@ class BacktestSpec:
     constraints: list[str] = field(default_factory=list)
     outputs: list[str] = field(default_factory=lambda: ["summary", "plots"])
     mode: BacktestMode = "fast"
+    economic_rationale: list[str] = field(default_factory=list)
+    rationale_risks: list[str] = field(default_factory=list)
+    source_links: list[str] = field(default_factory=list)
 
     def runtime_context(self) -> RuntimeContext:
         return resolve_runtime_context(mode=self.mode, purpose="backtest", tags=(self.strategy_name,))

@@ -43,6 +43,13 @@ def run_backtest(spec: BacktestSpec) -> dict[str, object]:
     )
     artifacts.reproduce_path.chmod(0o755)
     artifacts.owner_checklist_path.write_text(build_owner_checklist(spec), encoding="utf-8")
+    if spec.economic_rationale or spec.rationale_risks or spec.source_links:
+        research_context = {
+            "economic_rationale": spec.economic_rationale,
+            "rationale_risks": spec.rationale_risks,
+            "source_links": spec.source_links,
+        }
+        artifacts.write_json(run_dir / "research_context.json", research_context)
 
     validation = validate_backtest_package(
         spec=spec,
