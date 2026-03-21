@@ -30,6 +30,7 @@ Use this skill when one agent should not do everything.
 
 ### 6. Reviewer lane
 - checks merge readiness, regression risk, overclaiming, and missing edge cases
+- primary skill: `skills/reviewer-lane/`
 
 ### 7. Ops lane
 - handles restart checks, Discord sends, git notifications, health/status summaries
