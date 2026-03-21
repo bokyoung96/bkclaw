@@ -57,3 +57,43 @@ Every meaningful handoff should include:
 - one purpose per branch
 - merged branches should be deleted by default
 - git channel should receive short operational updates at meaningful milestones
+
+
+## Practical handoff rules
+
+### Research -> OMX handoff
+Use this when:
+- the question has moved from source discovery to implementation planning
+- a shortlist and thesis already exist
+- file changes or structured execution are now required
+
+Required handoff payload:
+- conclusion / thesis
+- shortlisted sources
+- implementation target
+- verification target
+- risks / unknowns
+
+### OMX -> Ralph handoff
+Use this when:
+- the task requires persistent completion
+- retries / verification loops are expected
+- a one-shot codex run is likely insufficient
+
+Required handoff payload:
+- target outcome
+- stop condition / definition of done
+- verification steps
+- retry expectations
+- branch/reporting expectations
+
+### Direct Codex vs OMX
+Prefer direct Codex only when:
+- the change is narrow
+- orchestration overhead would be wasteful
+- no persistent execution loop is needed
+
+Prefer OMX when:
+- prompt/state/skill composition matters
+- the task spans multiple artifacts or steps
+- you want a reusable execution wrapper
