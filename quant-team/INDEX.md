@@ -9,6 +9,7 @@
 - 실제 준자율 pilot: 대기
 
 ## 문서 순서
+0. `QUANT_TEAM_ENTRY.md`
 1. `DEFAULT_RUN_POLICY.md`
 2. `QUANT_TEAM_SPEC.md`
 3. `ROLE_PROMPTS.md`
@@ -27,3 +28,7 @@
 4. milestone 보고
 5. 성과 리뷰
 6. retry / stop / promote 판단
+
+
+## Canonical Entry
+- 실행 진입 기준의 canonical entry: `QUANT_TEAM_ENTRY.md`
