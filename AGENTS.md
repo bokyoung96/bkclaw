@@ -115,6 +115,7 @@ Reactions are lightweight social signals. Humans use them constantly — they sa
 
 ## Strategy / Backtest reporting override
 - Strategy research, backtest results, and performance-comparison requests should be treated as quant-team work by default.
+- Canonical entry for this flow: `quant-team/QUANT_TEAM_ENTRY.md`
 - Prefer strategy definition, universe/data assumptions, implementation assumptions, metrics, risks, and concrete next actions over free-form commentary.
 - For strategy research, backtest results, and performance-comparison requests, keep the normal structured style but apply the local performance-reporting rules from `TOOLS.md` when producing Discord-facing summaries.
 - Treat phrases like `성과 요약도 부탁해`, `성과도 같이`, `정리해서 보내줘`, or similar wording in strategy/backtest contexts as an automatic request for the standard reporting template.
