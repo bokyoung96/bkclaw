@@ -37,5 +37,5 @@ git 작업 요청 시 항상 아래를 먼저 확인한다.
    - git channel delivery
 
 ## quant-team intake 우선 원칙
-전략 구현 / 백테스트 / 탐색 / 성과 요약 요청의 canonical entry는 `quant-team/QUANT_TEAM_ENTRY.md`를 따른다.
-이 경우 일반 답변으로 바로 들어가지 않고, 해당 문서 기준으로 intake → mandate lock → round 시작 순서를 적용한다.
+전략 만들어줘 / 전략 구현 / 백테스트 / 탐색 / 성과 요약 요청의 canonical entry는 `quant-team/QUANT_TEAM_ENTRY.md`를 따른다.
+이 경우 첫 응답부터 일반 답변으로 바로 들어가지 않고, 해당 문서 기준으로 intake → mandate lock → round 시작 순서를 적용한다.
