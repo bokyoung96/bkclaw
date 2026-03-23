@@ -99,3 +99,13 @@ shared venv 확인 전 허용되는 표현:
 1. git finish + notify gate
 2. python/shared-venv check helper
 3. quant intake template/checker
+
+## Concrete Helpers
+
+- check_shared_python
+  - base Python / shared venv / package visibility를 분리 확인한다.
+- git_finish_and_notify
+  - push -> main merge -> push -> git notify -> branch cleanup 흐름을 묶는다.
+- quant-team/INTAKE_GATE_CHECKLIST.md
+  - run-policy first gate를 체크리스트로 고정한다.
+

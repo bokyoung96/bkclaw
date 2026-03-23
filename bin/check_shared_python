@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BASE_PYTHON="${BASE_PYTHON:-$(command -v python3 || true)}"
+SHARED_PYTHON="/home/node/.openclaw/workspace/.venv/bin/python"
+
+if [ -n "$BASE_PYTHON" ]; then
+  echo "[python-check] base_python=$BASE_PYTHON"
+  "$BASE_PYTHON" - <<'PY'
+import sys
+print(f"[python-check] base_version={sys.version.split()[0]}")
+PY
+else
+  echo "[python-check] base_python=missing"
+fi
+
+if [ -x "$SHARED_PYTHON" ]; then
+  echo "[python-check] shared_python=$SHARED_PYTHON"
+  "$SHARED_PYTHON" - <<'PY'
+import sys
+print(f"[python-check] shared_version={sys.version.split()[0]}")
+PY
+else
+  echo "[python-check] shared_python=missing"
+  exit 1
+fi
+
+if [ "$#" -gt 0 ]; then
+  for pkg in "$@"; do
+    PKG_NAME="$pkg" "$SHARED_PYTHON" - <<'PY'
+import importlib.util, os
+name = os.environ["PKG_NAME"]
+spec = importlib.util.find_spec(name)
+print(f"[python-check] package={name} shared={'present' if spec else 'missing'}")
+PY
+  done
+fi

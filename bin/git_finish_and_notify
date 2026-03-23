@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+usage: git_finish_and_notify <action> [detail]
+
+Flow:
+1. verify current branch is not main
+2. verify working tree clean
+3. push current branch to origin
+4. checkout main and fast-forward from origin/main
+5. merge current branch into main
+6. push origin main
+7. notify git channel via scripts/notify_git_channel.sh
+8. delete remote/local feature branch
+
+Environment:
+- TARGET_BRANCH (default: main)
+- REMOTE (default: origin)
+- KEEP_BRANCH=1 to skip branch deletion
+USAGE
+}
+
+if [ $# -lt 1 ]; then
+  usage >&2
+  exit 1
+fi
+
+ACTION="$1"
+DETAIL="${2:-}"
+TARGET_BRANCH="${TARGET_BRANCH:-main}"
+REMOTE="${REMOTE:-origin}"
+KEEP_BRANCH="${KEEP_BRANCH:-0}"
+
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$CURRENT_BRANCH" = "$TARGET_BRANCH" ]; then
+  echo "[git-finish] current branch is $TARGET_BRANCH; use a feature branch" >&2
+  exit 1
+fi
+
+if [ -n "$(git status --short)" ]; then
+  echo "[git-finish] working tree is not clean" >&2
+  git status --short
+  exit 1
+fi
+
+echo "[git-finish] branch=$CURRENT_BRANCH target=$TARGET_BRANCH remote=$REMOTE"
+git push -u "$REMOTE" "$CURRENT_BRANCH"
+
+git fetch "$REMOTE" "$TARGET_BRANCH"
+git checkout "$TARGET_BRANCH"
+git pull --ff-only "$REMOTE" "$TARGET_BRANCH"
+git merge --no-ff "$CURRENT_BRANCH" -m "Merge branch '$CURRENT_BRANCH'"
+git push "$REMOTE" "$TARGET_BRANCH"
+
+NOTIFY_DETAIL="$DETAIL"
+if [ -z "$NOTIFY_DETAIL" ]; then
+  NOTIFY_DETAIL="merged into $TARGET_BRANCH"
+fi
+scripts/notify_git_channel.sh "$ACTION" "$CURRENT_BRANCH" "$NOTIFY_DETAIL"
+
+if [ "$KEEP_BRANCH" != "1" ]; then
+  git push "$REMOTE" --delete "$CURRENT_BRANCH"
+  git branch -d "$CURRENT_BRANCH"
+fi
+
+echo "[git-finish] complete branch=$CURRENT_BRANCH target=$TARGET_BRANCH keep_branch=$KEEP_BRANCH"
