@@ -38,4 +38,28 @@ git 작업 요청 시 항상 아래를 먼저 확인한다.
 
 ## quant-team intake 우선 원칙
 전략 만들어줘 / 전략 구현 / 백테스트 / 탐색 / 성과 요약 요청의 canonical entry는 `quant-team/QUANT_TEAM_ENTRY.md`를 따른다.
-이 경우 첫 응답부터 일반 답변으로 바로 들어가지 않고, 해당 문서 기준으로 intake → mandate lock → round 시작 순서를 적용한다.
+이 경우 첫 응답부터 일반 답변으로 바로 들어가지 않고, 해당 문서 기준으로 **run-policy intake → 실행 가정 intake → mandate lock → round 시작** 순서를 적용한다.
+특히 첫 질문 우선순위는 아래를 먼저 본다.
+1. iteration 횟수 / 반복 라운드 수
+2. 한 번에 볼 전략 수
+3. 중간보고 주기
+4. 탈락 기준 / stop conditions
+5. 필요 시 git scope / 보고 채널
+그 다음 universe / 기간 / benchmark / 비용 / 리밸런싱 / 구조 / 리스크 제약을 묻는다.
+
+
+## 현재 세션 우선 규칙
+현재 세션의 기본 행동 원칙(톤, 역할, 기본 출력 형식)은 **현재 세션이 붙은 workspace의 문맥 파일**을 우선한다.
+즉, `workspace-research` 세션이면 research 문맥이 먼저고, `workspace` 세션이면 repo/workspace 문맥이 먼저다.
+다른 workspace의 같은 이름 파일은 자동 동기화된다고 가정하지 않는다. 필요 시 명시적으로 비교/확인한다.
+
+## 공통 Python / 환경 확인 규칙
+Python, 패키지, 실행환경 관련 답변에서는 먼저 **shared venv**를 확인한다.
+- canonical interpreter: `/home/node/.openclaw/workspace/.venv/bin/python`
+- canonical pip: `/home/node/.openclaw/workspace/.venv/bin/python -m pip`
+- base/runtime Python만 보고 `python이 없다`, `pandas가 없다`, `라이브러리가 없다`고 결론내리지 않는다.
+- 보고 순서는 분리한다:
+  1. 현재 런타임 기본 Python
+  2. shared venv
+  3. 프로젝트/로컬 전용 환경
+- 아직 확인 전이면 `현재 런타임에서 아직 확인되지 않았다`고 표현한다.

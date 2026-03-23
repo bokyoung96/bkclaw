@@ -44,6 +44,14 @@
 
 최소한 아래 항목은 먼저 잠근다.
 
+### 1) run-policy items first
+1. iterations / rounds
+2. strategies per round
+3. reporting cadence / channel
+4. stop conditions
+5. git scope when relevant
+
+### 2) then execution assumptions
 1. universe
 2. test period
 3. benchmark
@@ -51,11 +59,8 @@
 5. rebalance cadence
 6. structure (long-only / long-short / market-neutral)
 7. risk constraints
-8. run-policy items
-   - iterations / rounds
-   - reporting cadence / channel
-   - git scope
-   - stop conditions
+
+즉, 첫 응답에서 바로 전략 아이디어나 feasibility 설명으로 들어가지 않고, **이번 라운드 실험 계획표**를 먼저 잠근 뒤 세부 가정으로 내려간다.
 
 ## Output Default
 

@@ -46,6 +46,35 @@ Things like:
   - 프로젝트 실행환경 (project-local Dockerfile/env/tests)
 - If something is not yet proven, say `현재 내가 잡은 경로/세션에서는 아직 확인되지 않았다` rather than `없다`.
 
+## Shared Python / Quant Runtime Rules
+
+- Canonical shared Python environment for installed libraries:
+  - interpreter: `/home/node/.openclaw/workspace/.venv/bin/python`
+  - pip: `/home/node/.openclaw/workspace/.venv/bin/python -m pip`
+- When the user asks whether Python or a library exists, check the shared venv before concluding it is missing.
+- Do not answer from `/usr/bin/python3` alone when the shared venv may contain the actual user-installed stack.
+- For strategy/backtest work, prefer explicit execution through the shared venv.
+- If visibility differs by session, report the layers separately instead of collapsing to `없다`.
+
+## Quant-Team Intake Sync Rule
+
+- The canonical entry is `quant-team/QUANT_TEAM_ENTRY.md`.
+- In quant-team contexts, do **not** jump from the first request straight to strategy ideas.
+- Ask run-policy first:
+  1. iteration / rounds
+  2. strategies per round
+  3. reporting cadence
+  4. stop conditions
+  5. git/reporting scope when relevant
+- Then ask execution assumptions:
+  1. universe
+  2. test period
+  3. benchmark
+  4. transaction cost / slippage
+  5. rebalance cadence
+  6. structure
+  7. risk constraints
+
 ## Tavily Research Lane Rules
 
 - Treat Tavily as a **research-agent lane** capability first, not a coding-lane default.
