@@ -68,3 +68,6 @@ Python, 패키지, 실행환경 관련 답변에서는 먼저 **shared venv**를
   2. shared venv
   3. 프로젝트/로컬 전용 환경
 - 아직 확인 전이면 `현재 런타임에서 아직 확인되지 않았다`고 표현한다.
+
+## 운영 일관성 하드닝 우선 원칙
+중요한 누락 패턴(shared venv 미확인, quant intake 누락, git notify proof 누락)은 기억에 맡기지 않고 `OPERATING_HARDENING.md` 기준의 gate/proof 규칙으로 다룬다.

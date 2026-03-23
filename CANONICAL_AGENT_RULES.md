@@ -85,3 +85,17 @@ Python, 패키지, 실행환경 관련 답변에서는 먼저 **shared venv**를
   2. quant-team intake 순서
   3. 전달 완료 판정 규칙
   4. startup 톤/형식 규칙
+
+
+## Operating Consistency Hardening Rule
+
+운영 일관성 부족은 기억력 보강보다 **gate / checklist / proof / automation** 으로 줄인다.
+공통적으로 아래를 적용한다.
+
+1. Python / environment 관련 부재 판정은 shared venv 확인 전 금지
+2. quant-team 요청은 run-policy intake 전 전략 제안 금지
+3. git / Discord / media 전달은 proof 확보 전 완료 판정 금지
+4. 부분 완료와 전체 완료를 분리 보고
+5. 반복 작업은 가능한 한 스크립트/체크리스트로 고정
+
+상세 운영 원칙은 `OPERATING_HARDENING.md` 를 따른다.
