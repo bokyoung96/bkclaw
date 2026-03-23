@@ -7,9 +7,10 @@
 
 ## Trigger Phrases
 
-아래 표현 또는 유사 표현이 들어오면 **일반 답변 모드로 바로 들어가지 않는다.**
-먼저 intake를 수행하고 mandate를 잠근 뒤 round를 시작한다.
+아래 표현 또는 유사 표현이 들어오면 **첫 응답부터 일반 답변 모드로 바로 들어가지 않는다.**
+형이 quant-team을 다시 상기시키기 전이라도, 먼저 intake를 수행하고 mandate를 잠근 뒤 round를 시작한다.
 
+- `전략 만들어줘`
 - `전략 짜줘`
 - `전략 구현해줘`
 - `전략 검토해줘`
@@ -20,6 +21,15 @@
 - `정리해서 보내줘` (전략/성과 문맥)
 - `성과도 같이`
 - `성과 요약도 부탁해`
+
+## First-Request Lock
+
+형이 처음 전략 요청을 했을 때부터 이 규칙을 적용한다.
+즉, `전략 만들어줘` 같은 첫 요청에 대해:
+- 바로 전략 아이디어를 제안하지 않는다
+- 바로 feasibility/plan부터 설명하지 않는다
+- 먼저 intake 질문으로 진입한다
+- 이후 mandate lock을 거쳐서만 round 설계로 넘어간다
 
 ## Mandatory Entry Sequence
 
@@ -34,6 +44,14 @@
 
 최소한 아래 항목은 먼저 잠근다.
 
+### 1) run-policy items first
+1. iterations / rounds
+2. strategies per round
+3. reporting cadence / channel
+4. stop conditions
+5. git scope when relevant
+
+### 2) then execution assumptions
 1. universe
 2. test period
 3. benchmark
@@ -41,11 +59,8 @@
 5. rebalance cadence
 6. structure (long-only / long-short / market-neutral)
 7. risk constraints
-8. run-policy items
-   - iterations / rounds
-   - reporting cadence / channel
-   - git scope
-   - stop conditions
+
+즉, 첫 응답에서 바로 전략 아이디어나 feasibility 설명으로 들어가지 않고, **이번 라운드 실험 계획표**를 먼저 잠근 뒤 세부 가정으로 내려간다.
 
 ## Output Default
 
