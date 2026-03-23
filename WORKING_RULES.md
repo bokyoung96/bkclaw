@@ -1,5 +1,10 @@
 # WORKING_RULES.md
 
+## canonical 문서 우선 원칙
+공통 운영 규칙은 `CANONICAL_AGENT_RULES.md` 를 먼저 본다.
+이 문서는 `workspace` 고유의 작업 흐름(코드/gip/repo/운영 반영)을 보강하는 용도다.
+
+
 ## 폴더 우선 확인 원칙
 
 ### 1. 리서치 / 초안 / 웹 조사
