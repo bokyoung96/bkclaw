@@ -7,30 +7,49 @@ description: Use when coordinating multiple agent lanes such as orchestrator, re
 
 Use this skill when one agent should not do everything.
 
-## Default lanes for this workspace
+## Core stance
 
-### 1. Orchestrator lane
-- owns routing, priority, and final user report
-- owns branch / PR / merge decisions for repo work
+Treat the operating structure as three separate layers:
+1. **agent** = role ownership
+2. **mcp / tool capability** = external interaction and execution capability
+3. **skills** = workflow and decision policy
 
-### 2. Research lane
-- owns Tavily, web search, source shortlist, deep synthesis, and browser escalation
-- primary skill: `skills/research-lane/`
-- runs in quick scan mode by default, then deepens only when needed
+Do **not** solve every new capability need by creating another agent.
+First ask whether the need belongs to:
+- an existing role agent,
+- a capability/tool layer,
+- or a workflow/skill update.
 
-### 3. Coding lane
-- owns file edits, refactors, scripts, tests, repo layout improvements
+## Default role map for this workspace
 
-### 4. Reviewer lane
-- checks merge readiness, regression risk, overclaiming, and missing edge cases
-- primary skill: `skills/reviewer-lane/`
+### 1. Coordinator
+- `main`
+- owns routing, prioritization, and final user-facing report
 
-### 5. Ops lane
-- handles restart checks, Discord sends, git notifications, health/status summaries
+### 2. Specialists
+- `research` → web research, source shortlist, deep synthesis entry
+- `reviewer` → quality check, overclaim guard, merge/readiness review
+- `backtest` → strategy implementation / experiment / backtest
+- `performance-review` → performance interpretation / risk / reporting
 
-## Core task flow
+### 3. External harness
+- ACP
+- Codex CLI
+- OMX
+- exec / shell runtime
 
-Inbox -> Assigned -> In Progress -> Review -> Done | Failed
+These are **execution harnesses**, not specialist roles.
+
+## Tavily rule
+
+Treat Tavily as a **research capability**, not its own agent.
+Default classification:
+- role owner: `research`
+- layer: mcp / tool capability
+- policy owner: research-lane / deep-research-lane skills
+
+Only consider a separate Tavily-heavy lane if research becomes long-lived,
+thread-bound, or operationally distinct enough to justify a new role.
 
 ## Handoff rules
 
@@ -41,19 +60,21 @@ Every meaningful handoff should say:
 - what remains
 - known risks
 
-## Workspace-specific rules
+## When to read canonical references
 
+If you need the detailed current structure, read these canonical docs:
+- `/home/node/.openclaw/workspace/docs/agents/inventory.md`
+- `/home/node/.openclaw/workspace/docs/agents/orchestration.md`
+- `/home/node/.openclaw/workspace/docs/agents/discord-entrypoints.md`
+- `/home/node/.openclaw/workspace/docs/agents/harness-architecture.md`
+
+Read them when:
+- deciding whether to add a new agent,
+- checking where Tavily/browser/ACP/Codex belong,
+- reasoning about Discord entry points like `/agents` or `/agent_team_orchestration`,
+- auditing duplication between docs, runtime state, and skills.
+
+## Workspace-specific reminders
 - short-lived branches; merged branches deleted by default
 - important git milestones notify the git channel
-- root-level clutter should be reduced aggressively
 - persona/operating-rule files are protected unless the user explicitly asks to change them
-
-
-
-
-## Recommended research flow
-
-1. Research lane starts in quick scan mode.
-2. If the question needs more depth, the same research lane escalates into deep research mode.
-3. Browser work is used only if direct interaction is required.
-4. Reviewer lane challenges the conclusion when confidence/risk is high.
