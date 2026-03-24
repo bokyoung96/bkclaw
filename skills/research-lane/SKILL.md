@@ -1,6 +1,6 @@
 ---
 name: research-lane
-description: Unified research lane for fast web scanning, Tavily-led source discovery, deep synthesis, and browser escalation when necessary. Use for current-web research, source shortlisting, paper/blog/news cross-checking, long-form synthesis, and implementation-oriented research translation. This is the default research skill for the workspace.
+description: Unified research lane for fast web scanning, deep research, and verification-oriented follow-up. Use for current-web research, source shortlisting, paper/blog/news cross-checking, long-form synthesis, and implementation-oriented research translation. Tool choice (plain web, Tavily, browser) should usually be decided inside this skill rather than by selecting a tool-specific skill first. This is the default research skill for the workspace.
 ---
 
 # Research Lane
@@ -91,3 +91,14 @@ Readiness still requires:
 
 Deep research should be more detailed than quick scan mode.
 When possible, keep a clean link section at the end.
+
+
+## Skill granularity rule
+
+Prefer splitting research skills by **judgment flow**, not by specific tool.
+Good split examples:
+- quick scan
+- deep research
+- verification
+
+Avoid creating a new top-level skill only because one tool (for example Tavily or browser automation) becomes useful. Those should usually remain internal tool-escalation choices inside the research lane.

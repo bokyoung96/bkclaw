@@ -81,6 +81,7 @@ Skill은 “누가 하느냐”보다
 - 기본 coordinator는 `main`
 - 사용자의 입력을 받고
 - specialist agent 호출이 필요한지 판단한다
+- orchestration ownership을 가진다
 - 결과를 다시 사용자 관점으로 합친다
 
 ### 3.2 Specialists
@@ -226,3 +227,13 @@ agent를 늘리는 것보다 아래를 우선한다.
 
 > Agent는 역할, MCP/tool은 capability, skill은 절차다.
 > 이 셋을 분리할수록 멀티에이전트 구조는 강해진다.
+
+
+## 9. Responsibility rule
+
+> Agent decides, skill executes the method.
+
+정확히는:
+- coordinator agent(`main`)가 routing / escalation / ownership을 결정한다.
+- skill은 그 결정을 더 일관되게 수행하게 만드는 방법론이다.
+- tool/capability는 그 결정을 실제로 집행하는 수단이다.

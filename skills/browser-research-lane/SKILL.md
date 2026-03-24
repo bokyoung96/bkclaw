@@ -1,61 +1,25 @@
 ---
 name: browser-research-lane
-description: Use when web work requires direct page interaction rather than search snippets alone. Especially relevant for docs sites, app dashboards, authenticated web UIs, form-driven exploration, click/scroll/snapshot workflows, and cases where Tavily/search results are not enough. This skill is a browser-exploration complement to the research lane, not a replacement for Tavily or normal web search.
+description: Legacy compatibility shim for browser-heavy research requests. Use when older workspace references explicitly call this skill, but prefer `research-lane` as the primary skill. Browser choice should usually be made inside `research-lane` as a verification/escalation step, not by treating browser use as its own top-level research lane.
 ---
 
 # Browser Research Lane
 
-Use this skill to absorb the useful parts of agent-browser into the current workspace without turning browser automation into the default search path.
+This skill is retained mainly for backward compatibility.
 
-## Role in the lane model
+## Canonical direction
+- Primary research skill: `research-lane`
+- Browser work: verification / escalation step inside that lane
+- Do not treat browser usage alone as sufficient reason to create a separate research lane
 
-- **Primary role**: research-lane support
-- **Secondary role**: ops-lane support for UI verification
-- **Not the default**: do not start with browser automation when Tavily or normal web search is enough
+## Use this skill only when
+- an existing doc, workflow, or historical reference explicitly points here, and
+- you need a reminder that browser work is a follow-up verification path, not the default search path
 
-## When to use
+## What to do
+1. Read `/home/node/.openclaw/workspace/skills/research-lane/SKILL.md` first.
+2. Use normal web search/fetch or Tavily before browser escalation unless direct interaction is clearly required from the start.
+3. Treat browser evidence as targeted confirmation, navigation, or UI-state inspection.
 
-Use this skill when:
-- a docs site must be navigated interactively
-- a site has search/filter UI that must be operated directly
-- the answer depends on clicking through live pages
-- screenshots/snapshots of current UI state matter
-- an authenticated dashboard or app UI must be inspected
-
-## When not to use
-
-Do not use this skill when:
-- Tavily/web search already gives enough high-quality results
-- a quick source shortlist is all that is needed
-- the task is primarily code or repo work
-- deep browser interaction would be overkill
-
-## Default workflow
-
-1. Start with Tavily or normal web search.
-2. Build a shortlist of likely pages.
-3. Only escalate to browser exploration if interaction is required.
-4. Capture the minimum browser-derived evidence needed.
-5. Return to the normal response structure:
-   - conclusion
-   - key evidence
-   - source tier
-   - risk / uncertainty
-   - next action
-
-## Integration rule
-
-Treat browser automation as a **follow-up tool**, not the first tool.
-Tavily finds. Browser exploration confirms or navigates.
-
-## Output discipline
-
-When browser work is used, mention:
-- which page(s) were explored
-- what interaction was required
-- what was learned that search snippets alone did not reveal
-
-## Cleanup principle
-
-Do not let browser-specific notes or one-off commands sprawl across the repo root.
-Any stable browser workflow should live in a skill, helper script, or docs reference.
+## Anti-duplication note
+Detailed browser-escalation logic should live in `research-lane`, not here.
