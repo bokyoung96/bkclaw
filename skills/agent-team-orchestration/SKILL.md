@@ -40,6 +40,16 @@ First ask whether the need belongs to:
 
 These are **execution harnesses**, not specialist roles.
 
+
+## Orchestration ownership rule
+
+Orchestration ownership belongs to the **coordinator agent** (normally `main`).
+This skill does **not** own routing by itself. Instead, it provides the method, classification lens, and handoff discipline that the coordinator uses.
+
+Short version:
+- **Agent decides**
+- **Skill guides how to execute that decision**
+
 ## Tavily rule
 
 Treat Tavily as a **research capability**, not its own agent.
