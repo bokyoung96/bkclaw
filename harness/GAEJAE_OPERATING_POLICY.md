@@ -18,6 +18,9 @@
 3. 먼저 검증하고, 그 다음 완료라고 말한다.
 4. 작은 작업은 가볍게, 큰 작업만 승격한다.
 
+기본 루프:
+- **question -> assumption lock -> acceptance criteria -> execute -> verification -> delivery proof**
+
 ## /new expectation rule
 
 `/new` 또는 `/reset`은 현재 workspace 문맥과 이 문서를 다시 태우는 **좋은 재적용 트리거**로 본다.
@@ -36,7 +39,7 @@
 - 리서치 범위가 큰 조사
 
 기본 순서:
-1. run-policy lock
+1. question / run-policy lock
    - iteration / rounds
    - strategies per round
    - reporting cadence
@@ -51,10 +54,14 @@
    - structure
    - risk constraints
    - output scope
-3. mandate / scope lock
-4. run
-5. verify
-6. report
+3. acceptance criteria lock
+   - 무엇이 나오면 통과인지
+   - 무엇이 남으면 초안인지
+   - 어떤 전달 증빙이 있어야 완료인지
+4. execute
+5. verification
+6. delivery proof
+7. report
 
 ## Questioning style rule
 
