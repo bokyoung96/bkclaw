@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=../scripts/lib/load_env.sh
+. "$ROOT_DIR/scripts/lib/load_env.sh"
+load_workspace_env
+
+printf '[tavily]\n'
+if [ -n "${TAVILY_API_KEY:-}" ]; then
+  printf 'key=present\n'
+else
+  printf 'key=missing\n'
+fi
+
+printf '\n[runtime]\n'
+if command -v python3 >/dev/null 2>&1; then
+  printf 'python3=%s\n' "$(command -v python3)"
+else
+  printf 'python3=missing\n'
+fi
+
+printf '\n[smoke]\n'
+if [ -z "${TAVILY_API_KEY:-}" ]; then
+  printf 'smoke=skipped(no-key)\n'
+  exit 0
+fi
+
+python3 - <<'PY'
+import json, os, sys, urllib.request
+key = os.environ.get('TAVILY_API_KEY')
+url = 'https://api.tavily.com/search'
+payload = {
+    'api_key': key,
+    'query': 'site:example.com harness engineering smoke test',
+    'search_depth': 'basic',
+    'max_results': 1,
+    'include_raw_content': False,
+}
+req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers={'Content-Type':'application/json'})
+try:
+    with urllib.request.urlopen(req, timeout=20) as r:
+        body = json.loads(r.read().decode())
+    results = body.get('results') or []
+    print('smoke=ok')
+    print(f'results={len(results)}')
+except Exception as e:
+    print('smoke=failed')
+    print(f'error={type(e).__name__}: {e}')
+    sys.exit(1)
+PY
+
+printf '\n[guidance]\n'
+printf '%s\n' 'Report Tavily by layer: key/config -> active runtime env -> smoke call.'
+printf '%s\n' 'Do not say 없다/안 된다 before these layers are checked.'
