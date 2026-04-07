@@ -88,6 +88,7 @@ Things like:
   - active runtime env issue
   - provider/search execution issue
 - Do not say `없다`, `안 된다`, `못 쓴다` before the preflight layers are checked.
+- Prefer `./bin/check_tavily_ready` as the first helper for Tavily readiness checks.
 
 ## Large-work Questioning Rules
 
@@ -173,3 +174,12 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+## Backtest Verification Rules
+
+- Before calling a backtest/performance task `완료`, run through `quant-team/BACKTEST_VERIFICATION_CHECKLIST.md`.
+- Separate clearly:
+  1. result generated
+  2. verification complete
+  3. provider-visible delivery complete
+- If charts were requested, file generation alone is not completion.

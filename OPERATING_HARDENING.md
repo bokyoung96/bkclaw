@@ -127,3 +127,8 @@ preflight 전 `없다`, `안 된다`, `보냈다`, `완료` 같은 단정은 금
 - quant-team/INTAKE_GATE_CHECKLIST.md
   - run-policy first gate를 체크리스트로 고정한다.
 
+
+- check_tavily_ready
+  - key / runtime env / smoke call을 분리 확인한다.
+- quant-team/BACKTEST_VERIFICATION_CHECKLIST.md
+  - assumptions / metrics / robustness / deployability / delivery를 분리 검증한다.
