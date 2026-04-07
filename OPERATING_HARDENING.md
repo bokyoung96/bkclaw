@@ -56,7 +56,24 @@ shared venv 확인 전 허용되는 표현:
 - structure
 - risk constraints
 
-### 3) Git Completion Gate
+큰 작업에서는 가능하면 최소 한 번은 질문 턴을 거친다.
+가정이 비어 있으면 바로 구현/추천/결론으로 점프하지 않는다.
+
+### 3) Tavily / Media Preflight Gate
+반복 장애가 있었던 Tavily / Discord media / provider delivery 문맥은 아래를 먼저 확인한다.
+
+- Tavily
+  - key 존재
+  - active runtime env 노출
+  - smoke call 성공
+- media / delivery
+  - artifact 생성
+  - staging path 적합성
+  - provider-visible send success 또는 동급 proof
+
+preflight 전 `없다`, `안 된다`, `보냈다`, `완료` 같은 단정은 금지한다.
+
+### 4) Git Completion Gate
 다음 항목이 분리 확인되기 전에는 `완료`라고 말하지 않는다.
 
 - local commit
@@ -99,6 +116,7 @@ shared venv 확인 전 허용되는 표현:
 1. git finish + notify gate
 2. python/shared-venv check helper
 3. quant intake template/checker
+4. Tavily/media preflight checker
 
 ## Concrete Helpers
 

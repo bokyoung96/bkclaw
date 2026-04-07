@@ -79,13 +79,23 @@ Python, 패키지, 실행환경 관련 답변에서는 먼저 **shared venv**를
 ## Drift Prevention Rule
 
 - 공통 규칙은 이 문서를 먼저 갱신한다.
+- 세션 재적용용 공통 anchor는 `harness/GAEJAE_OPERATING_POLICY.md` 를 함께 본다.
 - 각 workspace의 `AGENTS.md`, `TOOLS.md`, `BOOTSTRAP.md`, `WORKING_RULES.md` 등에는 공통 규칙 전체를 복붙하지 말고, 역할별 차이만 둔다.
 - 드리프트 고위험 항목은 정기적으로 비교한다:
   1. shared venv 확인 규칙
   2. quant-team intake 순서
-  3. 전달 완료 판정 규칙
-  4. startup 톤/형식 규칙
+  3. Tavily preflight 순서
+  4. Discord/media 전달 완료 판정 규칙
+  5. startup 톤/형식 규칙
 
+## Cross-workspace Operating Anchor
+
+`harness/GAEJAE_OPERATING_POLICY.md` 는 아래 항목의 공통 운영 anchor 역할을 한다.
+- `/new` 이후 재적용 기대 규칙
+- intake-first for large work
+- questioning style for large work
+- repeated-failure preflight gates
+- verification-before-done posture
 
 ## Operating Consistency Hardening Rule
 
