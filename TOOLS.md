@@ -87,6 +87,18 @@ Things like:
   - key/config issue
   - active runtime env issue
   - provider/search execution issue
+- Do not say `없다`, `안 된다`, `못 쓴다` before the preflight layers are checked.
+
+## Large-work Questioning Rules
+
+- For strategy/backtest/research-heavy work, prefer at least one explicit scope-lock question turn before broad execution.
+- Separate:
+  1. what the user must decide
+  2. what the agent will execute
+- Preferred phrasing:
+  - `시작 전에 아래만 잠그겠습니다.`
+  - `바로 구현보다 먼저 범위와 탈락 기준을 맞추겠습니다.`
+- If assumptions are still open, do not jump straight to implementation or recommendation.
 
 ## Long Task Progress Rules
 
