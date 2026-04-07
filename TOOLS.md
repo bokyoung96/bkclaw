@@ -185,3 +185,11 @@ Add whatever helps you do your job. This is your cheat sheet.
   2. verification complete
   3. provider-visible delivery complete
 - If charts were requested, file generation alone is not completion.
+
+## Playwright MCP Rules
+
+- Playwright MCP is an optional capability for browser automation, not a default tool for all web tasks.
+- Prefer lightweight fetch/search/Tavily first.
+- Use Playwright MCP when dynamic rendering, interaction, or browser-visible verification is required.
+- MCP config example lives at `configs/mcp/playwright.mcp.json`.
+- Operational note: for coding agents, Playwright CLI+SKILLS may be more token-efficient than MCP, but MCP is still useful for persistent browser-state loops.

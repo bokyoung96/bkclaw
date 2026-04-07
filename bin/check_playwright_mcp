@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+mkdir -p "$ROOT_DIR/.pnpm-home" "$ROOT_DIR/.xdg-cache"
+
+printf '[runtime]\n'
+if command -v node >/dev/null 2>&1; then
+  printf 'node=%s\n' "$(command -v node)"
+  node --version
+else
+  printf 'node=missing\n'
+fi
+
+if command -v pnpm >/dev/null 2>&1; then
+  printf 'pnpm=%s\n' "$(command -v pnpm)"
+  pnpm --version
+else
+  printf 'pnpm=missing\n'
+fi
+
+printf '\n[smoke]\n'
+PNPM_HOME="$ROOT_DIR/.pnpm-home" XDG_CACHE_HOME="$ROOT_DIR/.xdg-cache" \
+  pnpm dlx @playwright/mcp@latest --help >/tmp/playwright-mcp-help.txt
+printf 'smoke=ok\n'
+printf 'help_output=%s\n' '/tmp/playwright-mcp-help.txt'
+
+printf '\n[guidance]\n'
+printf '%s\n' 'Use Playwright MCP only when dynamic rendering or browser interaction is actually required.'
+printf '%s\n' 'Prefer lightweight fetch/search/Tavily first.'
