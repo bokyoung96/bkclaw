@@ -20,6 +20,15 @@ success_criteria:
   mdd_min: -0.25
   turnover_max: 1.00
   subperiod_pass: 2/3
+acceptance:
+  required_metrics: [CAGR, Volatility, Sharpe, MDD]
+  required_robustness_checks: [subperiod, cost_sensitivity]
+  verdict_required: true
+delivery:
+  channel: <channel id or session>
+  format: summary|summary+charts
+  charts_visible_in_chat: true
+  completion_proof: message_id_or_equivalent
 constraints:
   - no excessive parameter sweep
   - conservative transaction cost assumptions
@@ -47,6 +56,7 @@ git:
    - 역할 할당 결정
 2. Ops Recorder
    - mandate 요약 작성
+   - acceptance criteria / verification plan / delivery proof expectation 기록
 
 ### Round 1 — idea discovery
 1. Research Lead

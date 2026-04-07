@@ -2,10 +2,11 @@
 
 ## canonical 문서 우선 원칙
 공통 운영 규칙은 `CANONICAL_AGENT_RULES.md` 를 먼저 본다.
-세션 재적용용 공통 anchor는 `harness/GAEJAE_OPERATING_POLICY.md` 를 함께 본다.
+세션 재적용용 공통 anchor는 `harness/GAEJAE_OPERATING_POLICY.md` 와 `harness/DEFAULT_TASK_LOOP.md` 를 함께 본다.
 이 문서는 `workspace` 고유의 작업 흐름(코드/gip/repo/운영 반영)을 보강하는 용도다.
 
 ## cross-workspace anchor 요약
+- 의미 있는 작업은 `question -> assumption lock -> acceptance criteria -> verification -> delivery proof` 기본 루프를 따른다.
 - 큰 작업은 `scope lock -> run -> verify -> report` 순서를 우선한다.
 - quant/backtest/research-heavy 요청은 intake-first를 기본으로 본다.
 - Tavily / Discord media / git completion은 preflight/proof 기준으로 다룬다.

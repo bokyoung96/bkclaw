@@ -52,6 +52,8 @@
 8. 실전성 vs 성과 우선순위
 9. 과최적화 허용도
 10. 최종 산출물 범위
+11. acceptance criteria (무엇이 나오면 통과인지)
+12. delivery proof expectation (message id / visible chart / report packet 등)
 
 ---
 

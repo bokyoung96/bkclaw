@@ -88,7 +88,9 @@ Things like:
   - active runtime env issue
   - provider/search execution issue
 - Do not say `없다`, `안 된다`, `못 쓴다` before the preflight layers are checked.
+
 - Prefer `./bin/check_tavily_ready` as the first helper for Tavily readiness checks.
+- MCP-managed Tavily remote config example lives at `configs/mcp/tavily-remote.mcp.json`.
 
 ## Large-work Questioning Rules
 
