@@ -10,6 +10,7 @@ It is intentionally separate from the backtest engine itself.
 - invoke 1w1a backtest runs
 - read persisted run outputs
 - assemble owner checklist / packet / Discord-facing summary
+- normalize saved runs/report bundles into Discord payload pieces (markdown + attachments + metadata)
 - enforce verification and delivery-proof rules
 
 ## non-responsibilities
