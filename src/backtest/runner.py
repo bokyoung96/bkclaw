@@ -8,6 +8,7 @@ from src.backtest.models import BacktestRunArtifacts, BacktestSpec
 from src.backtest.output_standardizer import write_spec
 from src.backtest.progress import JsonlProgressNotifier
 from src.backtest.strategy_registry import get_strategy_runner
+from src.backtest_bridge.onew1a_adapter import run_via_1w1a, supports_strategy
 from src.validation.backtest_validation import validate_backtest_package
 
 
@@ -29,9 +30,12 @@ def run_backtest(spec: BacktestSpec) -> dict[str, object]:
     notifier.info("start", f"backtest started: {spec.strategy_name}", progress_pct=0.0)
     write_spec(artifacts, spec)
 
-    strategy_runner = get_strategy_runner(spec.strategy_name)
     try:
-        strategy_result = strategy_runner(spec=spec, run_dir=run_dir, notifier=notifier)
+        if supports_strategy(spec.strategy_name):
+            strategy_result = run_via_1w1a(spec, run_dir=run_dir, notifier=notifier)
+        else:
+            strategy_runner = get_strategy_runner(spec.strategy_name)
+            strategy_result = strategy_runner(spec=spec, run_dir=run_dir, notifier=notifier)
     except Exception as exc:
         notifier.error("run", f"backtest failed: {exc}")
         raise
